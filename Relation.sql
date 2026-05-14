@@ -43,7 +43,7 @@ CREATE TABLE wallets (
     CONSTRAINT fk_wallet_user
         FOREIGN KEY (user_id)
         REFERENCES users(id)
-        ON DELETE CASCADE
+        ON DELETE CASCADE,
 
     CONSTRAINT unique_user_wallet_name
         UNIQUE (user_id, name)
@@ -73,7 +73,7 @@ CREATE TABLE categories (
         ON DELETE CASCADE,
 
     CONSTRAINT unique_category_per_user_type
-    UNIQUE(user_id, name, type)
+    UNIQUE(user_id, name, type),
 
     CONSTRAINT unique_category_color_per_type
         UNIQUE(user_id, type, color)
