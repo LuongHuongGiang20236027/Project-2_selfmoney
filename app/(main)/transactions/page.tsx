@@ -283,17 +283,32 @@ export default function TransactionPage() {
     const isEdit = editingId !== null;
 
     return (
-        <div className="bg-[#0F172A] min-h-screen text-white">
+        <div className="bg-[#05070f] min-h-screen text-white relative overflow-hidden">
+            {/* Ambient visual background glowing spots */}
+            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-violet-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
+
             <Sidebar />
             <Header />
 
-            <main className="ml-64 pt-24 p-8">
+            <main className="ml-64 pt-24 p-8 relative z-10">
 
                 {/* HEADER */}
-                <div className="mb-10 flex items-center justify-between">
+                <div className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-900/60 pb-6 relative">
+                    <div className="absolute bottom-0 left-0 w-32 h-[1px] bg-gradient-to-r from-cyan-500 to-transparent" />
                     <div>
-                        <h1 className="text-3xl font-bold mb-2">Danh sách giao dịch</h1>
-                        <p className="text-slate-400">Quản lý thu chi cá nhân</p>
+                        <div className="flex items-center gap-2.5">
+                            <h1 className="text-3xl font-black bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent tracking-tight">
+                                Giao dịch
+                            </h1>
+                            <span className="bg-cyan-500/10 text-cyan-400 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full border border-cyan-500/20 tracking-wider shadow-[0_0_10px_rgba(6,182,212,0.1)]">
+                                Transactions
+                            </span>
+                        </div>
+
+                        <p className="text-xs text-slate-500 mt-1.5 font-medium tracking-wide">
+                            Xem, lọc và quản lý nhật ký thu chi cá nhân của bạn
+                        </p>
                     </div>
 
                     <button
@@ -301,7 +316,7 @@ export default function TransactionPage() {
                             setEditingId(null);
                             setOpenModal(true);
                         }}
-                        className="bg-cyan-500 text-black px-4 py-2 rounded-lg font-bold hover:bg-cyan-400"
+                        className="bg-cyan-500 text-black px-5 py-2.5 rounded-2xl font-bold hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-200"
                     >
                         + Giao dịch mới
                     </button>
@@ -311,92 +326,95 @@ export default function TransactionPage() {
                 <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 
                     {/* INCOME */}
-                    <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 relative overflow-hidden">
-
+                    <div className="bg-gradient-to-br from-slate-950/40 via-slate-900/40 to-slate-950/40 backdrop-blur-xl border border-slate-850 hover:border-slate-700/80 hover:-translate-y-1 hover:shadow-2xl hover:shadow-green-500/5 rounded-3xl p-6 relative overflow-hidden transition-all duration-300 group shadow-[0_4px_25px_rgba(0,0,0,0.4)]">
                         <div className="flex items-center justify-between mb-5">
-
-                            <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 text-2xl">
-                                💵
+                            <div className="w-12 h-12 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-400 group-hover:scale-110 group-hover:bg-green-500/20 transition-all duration-300">
+                                <svg className="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                </svg>
                             </div>
 
-                            <span className="text-xs text-green-400 font-bold">
+                            <span className="text-xs text-green-400 bg-green-400/10 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
                                 Thu nhập
                             </span>
-
                         </div>
 
                         <p className="text-slate-400 text-sm mb-1">
                             Tổng thu nhập
                         </p>
 
-                        <h2 className="text-3xl font-bold text-green-400">
-                            +{income.toLocaleString()}đ
+                        <h2 className="text-3xl font-sans tabular-nums text-green-400 drop-shadow-[0_0_10px_rgba(74,222,128,0.1)] flex items-baseline gap-0.5 tracking-wide">
+                            <span className="text-xl font-semibold opacity-85 leading-none mr-0.5">+</span>
+                            <span className="text-3xl font-black tracking-tight leading-none">{income.toLocaleString("vi-VN")}</span>
+                            <span className="text-xl font-semibold opacity-75 ml-0.5 leading-none">đ</span>
                         </h2>
 
-                        <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-green-500 to-transparent" />
-
+                        <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-green-500/50 to-transparent group-hover:via-green-400 transition-all duration-300" />
                     </div>
 
                     {/* EXPENSE */}
-                    <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 relative overflow-hidden">
-
+                    <div className="bg-gradient-to-br from-slate-950/40 via-slate-900/40 to-slate-950/40 backdrop-blur-xl border border-slate-850 hover:border-slate-700/80 hover:-translate-y-1 hover:shadow-2xl hover:shadow-red-500/5 rounded-3xl p-6 relative overflow-hidden transition-all duration-300 group shadow-[0_4px_25px_rgba(0,0,0,0.4)]">
                         <div className="flex items-center justify-between mb-5">
-
-                            <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center text-red-400 text-2xl">
-                                💳
+                            <div className="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 group-hover:scale-110 group-hover:bg-red-500/20 transition-all duration-300">
+                                <svg className="w-6 h-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6" />
+                                </svg>
                             </div>
 
-                            <span className="text-xs text-red-400 font-bold">
+                            <span className="text-xs text-red-400 bg-red-400/10 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
                                 Chi tiêu
                             </span>
-
                         </div>
 
                         <p className="text-slate-400 text-sm mb-1">
                             Tổng chi tiêu
                         </p>
 
-                        <h2 className="text-3xl font-bold text-red-400">
-                            -{expense.toLocaleString()}đ
+                        <h2 className="text-3xl font-sans tabular-nums text-rose-400 drop-shadow-[0_0_10px_rgba(248,113,113,0.1)] flex items-baseline gap-0.5 tracking-wide">
+                            <span className="text-xl font-semibold opacity-85 leading-none mr-0.5">-</span>
+                            <span className="text-3xl font-black tracking-tight leading-none">{expense.toLocaleString("vi-VN")}</span>
+                            <span className="text-xl font-semibold opacity-75 ml-0.5 leading-none">đ</span>
                         </h2>
 
-                        <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-red-500 to-transparent" />
-
+                        <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-red-500/50 to-transparent group-hover:via-red-400 transition-all duration-300" />
                     </div>
 
                     {/* BALANCE */}
-                    <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 relative overflow-hidden">
-
+                    <div className="bg-gradient-to-br from-slate-950/40 via-slate-900/40 to-slate-950/40 backdrop-blur-xl border border-slate-850 hover:border-slate-700/80 hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/5 rounded-3xl p-6 relative overflow-hidden transition-all duration-300 group shadow-[0_4px_25px_rgba(0,0,0,0.4)]">
                         <div className="flex items-center justify-between mb-5">
-
-                            <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-2xl">
-                                💰
+                            <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:bg-cyan-500/20 transition-all duration-300">
+                                <svg className="w-6 h-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
                             </div>
 
-                            <span className="text-xs text-cyan-400 font-bold">
+                            <span className="text-xs text-cyan-400 bg-cyan-400/10 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
                                 Số dư
                             </span>
-
                         </div>
 
                         <p className="text-slate-400 text-sm mb-1">
                             Số dư hiện tại
                         </p>
 
-                        <h2 className={`text-3xl font-bold ${balance >= 0 ? "text-cyan-400" : "text-red-400"}`}>
-                            {balance >= 0 ? "+" : "-"}
-                            {Math.abs(balance).toLocaleString()}đ
+                        <h2
+                            className={`text-3xl font-sans tabular-nums flex items-baseline gap-0.5 tracking-wide ${balance >= 0
+                                ? "text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.1)]"
+                                : "text-rose-400 drop-shadow-[0_0_10px_rgba(251,113,133,0.1)]"
+                                }`}
+                        >
+                            <span className="text-xl font-semibold opacity-85 leading-none mr-0.5">{balance >= 0 ? "+" : "-"}</span>
+                            <span className="text-3xl font-black tracking-tight leading-none">{Math.abs(balance).toLocaleString("vi-VN")}</span>
+                            <span className="text-xl font-semibold opacity-75 ml-0.5 leading-none">đ</span>
                         </h2>
 
-                        <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-
+                        <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent group-hover:via-cyan-400 transition-all duration-300" />
                     </div>
 
                 </section>
 
                 {/* FILTER */}
                 <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-4 mb-6">
-
                     <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
 
                         {/* SEARCH */}
@@ -407,7 +425,7 @@ export default function TransactionPage() {
                             onChange={(e) =>
                                 setFilters({ ...filters, search: e.target.value })
                             }
-                            className="bg-slate-950 border border-slate-800 rounded-xl px-4 py-3"
+                            className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 outline-none transition text-slate-200"
                         />
 
                         {/* CATEGORY */}
@@ -416,7 +434,7 @@ export default function TransactionPage() {
                             onChange={(e) =>
                                 setFilters({ ...filters, category: e.target.value })
                             }
-                            className="bg-slate-950 border border-slate-800 rounded-xl px-4 py-3"
+                            className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 outline-none transition text-slate-200"
                         >
                             <option value="">Tất cả danh mục</option>
                             {categories.map((c) => (
@@ -432,9 +450,9 @@ export default function TransactionPage() {
                             onChange={(e) =>
                                 setFilters({ ...filters, wallet: e.target.value })
                             }
-                            className="bg-slate-950 border border-slate-800 rounded-xl px-4 py-3"
+                            className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 outline-none transition text-slate-200"
                         >
-                            <option value="">Tất cả ví</option>
+                            <option value="">Tất cả tài khoản</option>
                             {wallets.map((w) => (
                                 <option key={w.id} value={w.name}>
                                     {w.name}
@@ -449,7 +467,7 @@ export default function TransactionPage() {
                             onChange={(e) =>
                                 setFilters({ ...filters, from: e.target.value })
                             }
-                            className="bg-slate-950 border border-slate-800 rounded-xl px-4 py-3"
+                            className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 outline-none transition text-slate-200"
                         />
 
                         {/* TO */}
@@ -459,7 +477,7 @@ export default function TransactionPage() {
                             onChange={(e) =>
                                 setFilters({ ...filters, to: e.target.value })
                             }
-                            className="bg-slate-950 border border-slate-800 rounded-xl px-4 py-3"
+                            className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 outline-none transition text-slate-200"
                         />
                     </div>
                 </div>
@@ -474,52 +492,100 @@ export default function TransactionPage() {
                         {filteredTransactions.map((t) => (
                             <div
                                 key={t.id}
-                                className="bg-slate-900/40 border border-slate-800 rounded-xl p-4 flex items-center hover:bg-slate-800/50 transition"
+                                className="relative group overflow-hidden bg-gradient-to-r from-slate-950/40 via-slate-900/40 to-slate-950/40 backdrop-blur-xl border border-slate-800/80 hover:border-slate-700/80 rounded-2xl p-4 flex items-center transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] hover:-translate-y-0.5"
                             >
-                                <div
-                                    className="w-12 h-12 rounded-xl flex items-center justify-center mr-4 border"
-                                    style={{
-                                        color: t.category_color,
-                                        backgroundColor: `${t.category_color}20`,
-                                        borderColor: `${t.category_color}40`,
-                                    }}
-                                >
-                                    <span className="text-xl">{t.category_icon}</span>
+                                {/* Left colored glowing strip */}
+                                <div 
+                                    className={`absolute left-0 top-1/2 -translate-y-1/2 w-1 h-12 rounded-r-full opacity-60 group-hover:opacity-100 transition-all duration-300 ${
+                                        t.category_type === "income" 
+                                            ? "bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.8)]" 
+                                            : "bg-rose-500 shadow-[0_0_12px_rgba(244,63,94,0.8)]"
+                                    }`}
+                                />
+
+                                {/* Icon with radial glow */}
+                                <div className="relative mr-4 pl-1 select-none">
+                                    {/* Category color glow backdrop */}
+                                    <div 
+                                        className="absolute inset-0 rounded-2xl blur-md opacity-20 group-hover:opacity-40 transition-all duration-300"
+                                        style={{ backgroundColor: t.category_color }}
+                                    />
+                                    <div
+                                        className="relative w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-300 group-hover:scale-105"
+                                        style={{
+                                            color: t.category_color,
+                                            backgroundColor: `${t.category_color}15`,
+                                            borderColor: `${t.category_color}35`,
+                                        }}
+                                    >
+                                        <span className="text-2xl">{t.category_icon}</span>
+                                    </div>
                                 </div>
 
-                                <div className="flex-1">
-                                    <div className="flex items-center gap-2">
-                                        <h3 className="font-bold">{t.category_name}</h3>
-                                        <span className="text-xs bg-slate-800 px-2 py-0.5 rounded">
+                                {/* Text & info layout */}
+                                <div className="flex-1 min-w-0 pr-4">
+                                    <div className="flex items-center gap-2.5 flex-wrap">
+                                        <h3 className="font-bold text-slate-100 tracking-tight group-hover:text-white transition-colors duration-200">
+                                            {t.category_name}
+                                        </h3>
+                                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-950/80 text-slate-400 border border-slate-800/80 shadow-inner group-hover:text-cyan-400 group-hover:border-cyan-500/30 transition-all duration-300">
                                             {t.wallet_name}
                                         </span>
                                     </div>
 
-                                    <p className="text-sm text-slate-400">{t.note}</p>
+                                    <p className="text-sm text-slate-400 mt-1 truncate max-w-md group-hover:text-slate-300 transition-colors duration-200">
+                                        {t.note || <span className="text-slate-600 italic text-xs">Không có ghi chú</span>}
+                                    </p>
                                 </div>
 
-                                <div className="text-right">
-                                    <div className={`font-bold text-lg ${t.category_type === "income"
-                                        ? "text-green-400"
-                                        : "text-red-400"
-                                        }`}>
-                                        {t.category_type === "income" ? "+" : "-"}
-                                        {Number(t.amount).toLocaleString()}đ
+                                {/* Value & Actions */}
+                                <div className="text-right flex flex-col justify-between h-full min-h-[4.5rem]">
+                                    {/* Amount and localized currency symbol */}
+                                    <div className={`font-sans tabular-nums flex items-baseline gap-0.5 justify-end text-lg transition-all duration-300 ${
+                                        t.category_type === "income"
+                                            ? "text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.15)] group-hover:text-emerald-300"
+                                            : "text-rose-400 drop-shadow-[0_0_10px_rgba(251,113,133,0.15)] group-hover:text-rose-300"
+                                    }`}>
+                                        <span className="text-sm font-semibold opacity-85 mr-0.5">{t.category_type === "income" ? "+" : "-"}</span>
+                                        <span className="text-lg font-black tracking-tight">{Number(t.amount).toLocaleString("vi-VN")}</span>
+                                        <span className="text-sm font-semibold opacity-75 ml-0.5">đ</span>
                                     </div>
 
-                                    <div className="text-xs text-slate-500">
-                                        {new Date(t.transaction_date).toLocaleDateString("vi-VN", {
-                                            timeZone: "Asia/Ho_Chi_Minh",
-                                            day: "2-digit",
-                                            month: "2-digit",
-                                            year: "numeric",
-                                        })}
+                                    {/* Date with subtle calendar icon */}
+                                    <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-1 justify-end font-medium group-hover:text-slate-400 transition-colors duration-200">
+                                        <svg className="w-3.5 h-3.5 text-slate-600 group-hover:text-slate-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        <span>
+                                            {new Date(t.transaction_date).toLocaleDateString("vi-VN", {
+                                                timeZone: "Asia/Ho_Chi_Minh",
+                                                day: "2-digit",
+                                                month: "2-digit",
+                                                year: "numeric",
+                                            })}
+                                        </span>
                                     </div>
 
-                                    {/* ACTION */}
-                                    <div className="flex gap-2 justify-end mt-2 text-sm">
-                                        <button onClick={() => handleEdit(t)}>✏️</button>
-                                        <button onClick={() => handleDelete(t.id)}>🗑️</button>
+                                    {/* Slide-in and fade-in Actions */}
+                                    <div className="flex gap-2 justify-end mt-2 opacity-0 translate-x-3 scale-95 group-hover:opacity-100 group-hover:translate-x-0 group-hover:scale-100 transition-all duration-300 origin-right">
+                                        <button 
+                                            onClick={() => handleEdit(t)}
+                                            className="text-slate-400 hover:text-cyan-400 hover:scale-105 active:scale-95 transition-all p-1.5 rounded-lg bg-slate-950/40 border border-slate-800 hover:border-cyan-500/30 hover:bg-slate-900 shadow-lg"
+                                            title="Sửa giao dịch"
+                                        >
+                                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                            </svg>
+                                        </button>
+                                        <button 
+                                            onClick={() => handleDelete(t.id)}
+                                            className="text-slate-400 hover:text-rose-400 hover:scale-105 active:scale-95 transition-all p-1.5 rounded-lg bg-slate-950/40 border border-slate-800 hover:border-rose-500/30 hover:bg-slate-900 shadow-lg"
+                                            title="Xóa giao dịch"
+                                        >
+                                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -528,16 +594,18 @@ export default function TransactionPage() {
                 )}
             </main>
 
-            {/* ================= MODAL ================= */}
+            {/* ================= STANDARDIZED PREMIUM MODAL ================= */}
             {openModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
 
-                    <div className="w-full max-w-lg bg-slate-900/90 border border-slate-700 rounded-2xl overflow-hidden shadow-2xl">
+                    <div className="bg-[#0b1329]/95 backdrop-blur-2xl border border-slate-800/80 rounded-3xl w-full max-w-lg shadow-[0_0_50px_rgba(6,182,212,0.15)] overflow-hidden relative transform transition-all">
+                        {/* Radiant decorative top line */}
+                        <div className="h-1.5 w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500" />
 
                         {/* ================= HEADER ================= */}
-                        <div className="px-6 py-5 border-b border-slate-800 flex justify-between items-center">
+                        <div className="px-6 py-5 border-b border-slate-800/80 flex justify-between items-center bg-slate-900/20">
                             <div>
-                                <h2 className="text-lg font-bold text-cyan-400">
+                                <h2 className="text-xl font-extrabold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
                                     {isEdit ? "Chỉnh sửa giao dịch" : "Thêm giao dịch"}
                                 </h2>
                                 <p className="text-xs text-slate-400 mt-1">
@@ -547,7 +615,7 @@ export default function TransactionPage() {
 
                             <button
                                 onClick={() => setOpenModal(false)}
-                                className="text-slate-400 hover:text-white"
+                                className="w-8 h-8 rounded-full bg-slate-950 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-600 flex items-center justify-center transition-all duration-200 text-sm"
                             >
                                 ✕
                             </button>
@@ -558,21 +626,22 @@ export default function TransactionPage() {
 
                             {/* AMOUNT */}
                             <div>
-                                <label className="text-xs text-slate-400 uppercase">
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
                                     Số tiền giao dịch
                                 </label>
 
-                                <div className="relative mt-2">
+                                <div className="relative">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 rounded-xl blur-sm" />
                                     <input
                                         value={form.amount}
                                         onChange={(e) =>
                                             setForm({ ...form, amount: e.target.value })
                                         }
-                                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-5 py-4 text-right text-2xl font-bold text-red-300 focus:border-cyan-500 outline-none"
+                                        className="relative w-full bg-slate-950/80 border border-slate-800/80 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-5 py-4 text-right text-3xl font-extrabold text-cyan-400 placeholder-cyan-500/30 transition-all duration-300 font-mono tracking-tight"
                                         placeholder="0"
                                     />
 
-                                    <span className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 font-bold">
+                                    <span className="absolute left-5 top-1/2 -translate-y-1/2 text-xs font-bold text-cyan-500/60 uppercase tracking-wider">
                                         VND
                                     </span>
                                 </div>
@@ -583,7 +652,7 @@ export default function TransactionPage() {
 
                                 {/* CATEGORY */}
                                 <div>
-                                    <label className="text-xs text-slate-400 uppercase">
+                                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
                                         Danh mục
                                     </label>
 
@@ -593,13 +662,12 @@ export default function TransactionPage() {
                                         onChange={(e) =>
                                             setForm({ ...form, category_id: e.target.value })
                                         }
-                                        className={`mt-2 w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 
-        ${isEdit ? "opacity-50 cursor-not-allowed" : ""}`}
+                                        className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl px-4 py-3 text-slate-200 placeholder-slate-650 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-inner"
                                     >
-                                        <option value="">Chọn danh mục</option>
+                                        <option value="" className="bg-slate-950 text-slate-400">Chọn danh mục</option>
 
                                         {categories.map((c) => (
-                                            <option key={c.id} value={c.id}>
+                                            <option key={c.id} value={c.id} className="bg-slate-950 text-slate-200">
                                                 {c.icon} {c.name}
                                             </option>
                                         ))}
@@ -608,8 +676,8 @@ export default function TransactionPage() {
 
                                 {/* WALLET */}
                                 <div>
-                                    <label className="text-xs text-slate-400 uppercase">
-                                        Ví tiền
+                                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
+                                        Tài khoản
                                     </label>
 
                                     <select
@@ -618,13 +686,12 @@ export default function TransactionPage() {
                                         onChange={(e) =>
                                             setForm({ ...form, wallet_id: e.target.value })
                                         }
-                                        className={`mt-2 w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3
-        ${isEdit ? "opacity-50 cursor-not-allowed" : ""}`}
+                                        className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl px-4 py-3 text-slate-200 placeholder-slate-650 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-inner"
                                     >
-                                        <option value="">Chọn ví</option>
+                                        <option value="" className="bg-slate-950 text-slate-400">Chọn tài khoản</option>
 
                                         {wallets.map((w) => (
-                                            <option key={w.id} value={w.id}>
+                                            <option key={w.id} value={w.id} className="bg-slate-950 text-slate-200">
                                                 {w.name}
                                             </option>
                                         ))}
@@ -635,7 +702,7 @@ export default function TransactionPage() {
 
                             {/* NOTE */}
                             <div>
-                                <label className="text-xs text-slate-400 uppercase">
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
                                     Ghi chú
                                 </label>
 
@@ -644,25 +711,25 @@ export default function TransactionPage() {
                                     onChange={(e) =>
                                         setForm({ ...form, note: e.target.value })
                                     }
-                                    className="mt-2 w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 min-h-[100px]"
+                                    className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl px-4 py-3 min-h-[100px] text-slate-200 placeholder-slate-600 transition-all duration-300 shadow-inner resize-none"
                                     placeholder="Ví dụ: ăn trưa, mua sắm..."
                                 />
                             </div>
                         </div>
 
                         {/* ================= FOOTER ================= */}
-                        <div className="px-6 py-5 border-t border-slate-800 flex justify-end gap-3">
+                        <div className="px-6 py-5 bg-slate-950/40 border-t border-slate-800/80 flex gap-3">
 
                             <button
                                 onClick={() => setOpenModal(false)}
-                                className="px-5 py-2 border border-slate-700 rounded-xl hover:bg-slate-800 transition"
+                                className="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-800 text-slate-300 font-medium transition-all duration-200 active:scale-95"
                             >
                                 Hủy
                             </button>
 
                             <button
                                 onClick={handleSave}
-                                className="px-6 py-2 bg-cyan-500 text-black rounded-xl font-bold hover:bg-cyan-400 transition"
+                                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg shadow-cyan-500/20"
                             >
                                 {isEdit ? "Cập nhật" : "Lưu giao dịch"}
                             </button>

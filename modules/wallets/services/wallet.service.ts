@@ -26,7 +26,7 @@ export const createWalletService = async ({
     const cleanName = name?.trim();
 
     if (!cleanName) {
-        throw new Error("Tên ví là bắt buộc");
+        throw new Error("Tên tài khoản là bắt buộc");
     }
 
     const wallet =
@@ -68,7 +68,7 @@ export const updateWalletService =
         if (!wallet) {
 
             throw new Error(
-                "Ví không tồn tại"
+                "Tài khoản không tồn tại"
             );
         }
 

@@ -16,6 +16,8 @@ export default function LoginPage() {
     const [loading, setLoading] =
         useState(false);
 
+    const [showPassword, setShowPassword] = useState(false);
+
     const handleLogin = async (
         e: React.FormEvent<HTMLFormElement>
     ) => {
@@ -245,10 +247,30 @@ export default function LoginPage() {
                                             e.target.value
                                         )
                                     }
-                                    type="password"
+                                    type={
+                                        showPassword
+                                            ? "text"
+                                            : "password"
+                                    }
                                     placeholder="••••••••"
-                                    className="w-full bg-black/60 border border-gray-700 rounded-lg py-3 pl-10 pr-4 text-white outline-none focus:ring-2 focus:ring-cyan-400"
+                                    className="w-full bg-black/60 border border-gray-700 rounded-lg py-3 pl-10 pr-12 text-white outline-none focus:ring-2 focus:ring-cyan-400"
                                 />
+
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setShowPassword(
+                                            !showPassword
+                                        )
+                                    }
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                                >
+                                    {
+                                        showPassword
+                                            ? "👁️"
+                                            : "🙈"
+                                    }
+                                </button>
 
                             </div>
                         </div>

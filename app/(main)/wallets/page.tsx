@@ -97,11 +97,11 @@ export default function WalletsPage() {
             case "💳":
                 return "Thẻ tín dụng";
             case "📱":
-                return "Ví điện tử";
+                return "Tài khoản điện tử";
             case "🪙":
                 return "Tiết kiệm";
             default:
-                return "Ví cá nhân";
+                return "Tài khoản cá nhân";
         }
     };
 
@@ -134,11 +134,11 @@ export default function WalletsPage() {
             const data = await res.json();
 
             if (!res.ok) {
-                alert(data.message || "Tạo ví thất bại");
+                alert(data.message || "Tạo tài khoản thất bại");
                 return;
             }
 
-            alert("Tạo ví thành công");
+            alert("Tạo tài khoản thành công");
 
             setOpen(false);
             resetForm();
@@ -146,7 +146,7 @@ export default function WalletsPage() {
             fetchWallets();
         } catch (err) {
             console.error(err);
-            alert("Lỗi tạo ví");
+            alert("Lỗi tạo tài khoản");
         }
     };
 
@@ -157,7 +157,7 @@ export default function WalletsPage() {
         try {
             const token = localStorage.getItem("token");
 
-            const ok = confirm("Bạn có chắc muốn xoá ví này?");
+            const ok = confirm("Bạn có chắc muốn xoá tài khoản này?");
             if (!ok) return;
 
             const res = await fetch(`/api/wallets/${id}`, {
@@ -176,10 +176,10 @@ export default function WalletsPage() {
 
             setWallets((prev) => prev.filter((w) => w.id !== id));
 
-            alert("Xoá ví thành công");
+            alert("Xoá tài khoản thành công");
         } catch (err) {
             console.error(err);
-            alert("Lỗi xoá ví");
+            alert("Lỗi xoá tài khoản");
         }
     };
 
@@ -255,7 +255,7 @@ export default function WalletsPage() {
             fetchWallets();
         } catch (err) {
             console.error(err);
-            alert("Lỗi cập nhật ví");
+            alert("Lỗi cập nhật tài khoản");
         }
     };
 
@@ -264,147 +264,200 @@ export default function WalletsPage() {
     // UI
     // =========================
     return (
-        <div className="bg-[#0F172A] min-h-screen text-white">
+        <div className="bg-[#05070f] min-h-screen text-white relative overflow-hidden">
+            {/* Ambient visual background glowing spots */}
+            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-violet-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
 
             <Sidebar />
             <Header />
 
-            <main className="ml-64 pt-24 p-8">
+            <main className="ml-64 pt-24 p-8 relative z-10">
 
-                <div className="mb-10">
-                    <h1 className="text-3xl font-bold mb-2">
-                        Ví của tôi
-                    </h1>
+                {/* ===== TOP ===== */}
+                <div className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-900/60 pb-6 relative">
+                    <div className="absolute bottom-0 left-0 w-32 h-[1px] bg-gradient-to-r from-cyan-500 to-transparent" />
+                    <div>
+                        <div className="flex items-center gap-2.5">
+                            <h1 className="text-3xl font-black bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent tracking-tight">
+                                Tài khoản của tôi
+                            </h1>
+                            <span className="bg-cyan-500/10 text-cyan-400 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full border border-cyan-500/20 tracking-wider shadow-[0_0_10px_rgba(6,182,212,0.1)]">
+                                Tài khoản
+                            </span>
+                        </div>
 
-                    <p className="text-slate-400">
-                        Quản lý ví và số dư của bạn
-                    </p>
+                        <p className="text-xs text-slate-500 mt-1.5 font-medium tracking-wide">
+                            Quản lý các tài khoản và số dư của bạn một cách trực quan
+                        </p>
+                    </div>
                 </div>
 
                 <div className="mb-6 flex items-center justify-between gap-4">
 
-                    {/* SEARCH (giữ style cũ) */}
+                    {/* SEARCH (giữ style cũ nhưng nâng cấp giao diện) */}
                     <input
                         type="text"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Tìm kiếm ví..."
-                        className="w-full md:w-80 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3"
+                        placeholder="Tìm kiếm tài khoản..."
+                        className="w-full md:w-80 bg-slate-950/70 border border-slate-800/80 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl px-4 py-3 text-slate-200 placeholder-slate-500 transition-all duration-300 shadow-inner"
                     />
 
                     {/* BUTTON */}
                     <button
                         onClick={openCreate}
-                        className="bg-cyan-500 text-black px-4 py-2 rounded-lg font-bold hover:bg-cyan-400"
+                        className="bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 px-5 py-2.5 rounded-xl font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg shadow-cyan-500/10 flex items-center gap-2"
                     >
-                        + Ví mới
+                        <span className="text-lg leading-none font-black">+</span>
+                        Tài khoản mới
                     </button>
 
                 </div>
 
                 <section className="mb-8">
-                    <div className="bg-[#1E293B]/70 border border-slate-700 rounded-2xl p-8 backdrop-blur-xl">
-                        <div className="flex items-center gap-3 text-slate-400 mb-3">
-                            <span className="text-cyan-400 text-2xl">💰</span>
-                            <span className="uppercase text-xs font-bold tracking-wider">
+                    <div className="bg-gradient-to-br from-slate-950/60 via-slate-900/60 to-slate-950/60 backdrop-blur-xl border border-slate-800/80 rounded-3xl p-4 relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-cyan-500/10 transition-all duration-300" />
+                        <div className="absolute bottom-0 left-0 w-24 h-24 bg-violet-500/5 rounded-full blur-3xl pointer-events-none group-hover:bg-violet-500/10 transition-all duration-300" />
+
+                        <div className="flex items-center gap-3 text-slate-400 mb-3 relative z-10">
+                            <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+                                💰
+                            </div>
+                            <span className="uppercase text-xs font-bold tracking-wider text-slate-300">
                                 Tổng tài sản
                             </span>
                         </div>
 
                         <h1
-                            className={`text-5xl font-bold ${totalAssets >= 0
-                                ? "text-cyan-400"
-                                : "text-red-400"
+                            className={`text-4xl font-sans tabular-nums flex items-baseline gap-0.5 select-all relative z-10 ${totalAssets >= 0
+                                ? "text-cyan-400 drop-shadow-[0_0_20px_rgba(34,211,238,0.15)]"
+                                : "text-rose-400 drop-shadow-[0_0_20px_rgba(251,113,133,0.15)]"
                                 }`}
                         >
-                            {totalAssets >= 0 ? "+" : "-"}
-                            {formatMoney(Math.abs(totalAssets))}
+                            <span className="text-2xl font-semibold opacity-85 leading-none mr-1">{totalAssets >= 0 ? "+" : "-"}</span>
+                            <span className="text-4xl font-black tracking-tight leading-none">{Math.abs(totalAssets).toLocaleString("vi-VN")}</span>
+                            <span className="text-3xl font-semibold opacity-75 ml-1 leading-none">đ</span>
                         </h1>
+
+                        <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent group-hover:via-cyan-400 transition-all duration-300" />
                     </div>
                 </section>
 
                 {loading ? (
-                    <p className="text-slate-400">Loading...</p>
+                    <div className="flex items-center justify-center py-20">
+                        <div className="w-10 h-10 rounded-full border-2 border-cyan-500/30 border-t-cyan-400 animate-spin" />
+                    </div>
                 ) : (
                     <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
                         {filteredWallets.map((wallet) => (
                             <div
                                 key={wallet.id}
-                                className="bg-[#1E293B]/70 border border-slate-700 rounded-2xl p-6 backdrop-blur-xl hover:border-cyan-400/40 transition-all flex flex-col"
+                                className="bg-gradient-to-br from-slate-950/60 via-slate-900/60 to-slate-950/60 backdrop-blur-xl border border-slate-800/60 hover:border-slate-700/80 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#06b6d4]/5 rounded-3xl p-6 relative overflow-hidden transition-all duration-300 group flex flex-col justify-between h-[260px] shadow-[0_4px_25px_rgba(0,0,0,0.4)]"
                             >
-                                <div className="flex items-center justify-between mb-6">
+                                <div>
+                                    <div className="flex items-center justify-between mb-5">
+                                        {/* Icon with radial glow */}
+                                        <div className="relative select-none">
+                                            {/* Color glow backdrop */}
+                                            <div
+                                                className="absolute inset-0 rounded-2xl blur-md opacity-10 group-hover:opacity-30 transition-all duration-300 animate-pulse-glow"
+                                                style={{ backgroundColor: wallet.color || "#06b6d4" }}
+                                            />
+                                            <div
+                                                className="relative w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-300 group-hover:scale-105"
+                                                style={{
+                                                    color: wallet.color || "#06b6d4",
+                                                    backgroundColor: `${wallet.color || "#06b6d4"}15`,
+                                                    borderColor: `${wallet.color || "#06b6d4"}35`,
+                                                }}
+                                            >
+                                                <span className="text-2xl">{wallet.icon || "💼"}</span>
+                                            </div>
+                                        </div>
 
-                                    <div className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl border border-slate-700 bg-black/40">
-                                        {wallet.icon}
+                                        <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider bg-slate-950/40 px-2 py-1 rounded-md border border-slate-900/60">
+                                            {new Date(wallet.created_at).toLocaleDateString("vi-VN")}
+                                        </span>
                                     </div>
 
-                                    <span className="text-xs text-slate-400">
-                                        {new Date(wallet.created_at).toLocaleDateString("vi-VN")}
-                                    </span>
+                                    <h3 className="font-bold text-lg text-slate-100 group-hover:text-white transition-colors duration-200">
+                                        {wallet.name}
+                                    </h3>
 
+                                    <div className="mt-2">
+                                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-950/80 text-slate-400 border border-slate-800/80 shadow-inner group-hover:text-cyan-400 group-hover:border-cyan-500/30 transition-all duration-300 inline-block w-fit">
+                                            {getWalletType(wallet.icon)}
+                                        </span>
+                                    </div>
                                 </div>
 
-                                <h3 className="text-xl font-bold mb-1">
-                                    {wallet.name}
-                                </h3>
+                                <div className="mt-4">
+                                    <p
+                                        className={`text-3xl font-sans tabular-nums flex items-baseline gap-0.5 transition-all duration-300 ${Number(wallet.balance) >= 0
+                                            ? "text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.1)] group-hover:text-emerald-300"
+                                            : "text-rose-400 drop-shadow-[0_0_10px_rgba(251,113,133,0.1)] group-hover:text-rose-300"
+                                            }`}
+                                    >
+                                        <span className="text-xl font-semibold opacity-85 leading-none mr-0.5">{Number(wallet.balance) >= 0 ? "+" : "-"}</span>
+                                        <span className="text-4xl font-black tracking-tight leading-none">{Math.abs(Number(wallet.balance)).toLocaleString("vi-VN")}</span>
+                                        <span className="text-xl font-semibold opacity-75 ml-0.5 leading-none">đ</span>
+                                    </p>
 
-                                <p className="text-sm text-slate-400 mb-6">
-                                    {getWalletType(wallet.icon)}
-                                </p>
+                                    <div className="mt-4 pt-4 border-t border-slate-800/60 flex justify-between items-center h-8">
+                                        <span className="text-[10px] text-slate-500 uppercase tracking-widest font-bold group-hover:text-slate-400 transition-colors">
+                                            Tài khoản
+                                        </span>
+                                        {/* Slide-in and fade-in Actions with Custom Premium SVGs */}
+                                        <div className="flex gap-2 opacity-0 translate-x-3 scale-95 group-hover:opacity-100 group-hover:translate-x-0 group-hover:scale-100 transition-all duration-350 origin-right">
+                                            <button
+                                                onClick={() => openEdit(wallet)}
+                                                className="text-slate-400 hover:text-cyan-400 hover:bg-cyan-500/10 border border-transparent hover:border-cyan-500/20 transition p-1.5 rounded-lg flex items-center justify-center"
+                                                title="Sửa tài khoản"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                </svg>
+                                            </button>
 
-                                <p
-                                    className={`text-3xl font-bold ${Number(wallet.balance) >= 0
-                                        ? "text-green-400"
-                                        : "text-red-400"
-                                        }`}
-                                >
-                                    {Number(wallet.balance) >= 0 ? "+" : "-"}
-                                    {formatMoney(Math.abs(Number(wallet.balance)))}
-                                </p>
-
-                                <div className="mt-6 pt-4 border-t border-slate-700 flex justify-end">
-
-                                    <div className="flex gap-2 items-center">
-
-                                        <button
-                                            onClick={() => openEdit(wallet)}
-                                            className="text-lg px-2 py-1 rounded border border-slate-600 hover:border-cyan-400 hover:text-cyan-400 transition"
-                                            title="Sửa ví"
-                                        >
-                                            ✏️
-                                        </button>
-
-                                        <button
-                                            onClick={() => handleDeleteWallet(wallet.id)}
-                                            className="text-lg px-2 py-1 rounded border border-slate-600 hover:border-red-500 hover:text-red-500 transition"
-                                            title="Xóa ví"
-                                        >
-                                            🗑️
-                                        </button>
-
+                                            <button
+                                                onClick={() => handleDeleteWallet(wallet.id)}
+                                                className="text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition p-1.5 rounded-lg flex items-center justify-center"
+                                                title="Xóa tài khoản"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
                                     </div>
-
                                 </div>
                             </div>
                         ))}
 
                         <button
                             onClick={openCreate}
-                            className="bg-[#1E293B]/70 border border-slate-700 rounded-2xl p-6 min-h-[280px]
-    flex flex-col items-center justify-center
-    hover:border-cyan-400/60 hover:bg-[#1E293B]/90 transition-all"
+                            className="bg-gradient-to-br from-slate-950/20 to-slate-900/20 border border-slate-800/80 border-dashed rounded-3xl p-6 min-h-[260px] h-full
+                                flex flex-col items-center justify-center relative overflow-hidden
+                                hover:border-cyan-500/50 hover:bg-slate-900/30 transition-all duration-350 group"
                         >
-                            <div className="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-3xl mb-4">
-                                +
+                            {/* Hover decoration glows */}
+                            <div className="absolute -top-12 -right-12 w-24 h-24 bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-cyan-500/15 transition-all duration-350" />
+                            <div className="absolute -bottom-12 -left-12 w-24 h-24 bg-violet-500/5 rounded-full blur-2xl group-hover:bg-violet-500/15 transition-all duration-350" />
+
+                            <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 group-hover:bg-cyan-500/20 group-hover:border-cyan-500/30 transition-all duration-350 shadow-[0_0_15px_rgba(6,182,212,0.05)] group-hover:shadow-[0_0_20px_rgba(6,182,212,0.15)]">
+                                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                                </svg>
                             </div>
 
-                            <p className="font-bold text-white text-lg">
-                                Thêm ví tiền
+                            <p className="font-bold text-slate-200 group-hover:text-white transition-colors duration-250 text-base">
+                                Thêm tài khoản mới
                             </p>
 
-                            <p className="text-xs text-slate-400 mt-1 text-center">
-                                Tạo ví để quản lý tiền của bạn
+                            <p className="text-xs text-slate-500 mt-1.5 text-center max-w-[200px] leading-relaxed group-hover:text-slate-400 transition-colors duration-250">
+                                Tạo tài khoản mới để theo dõi tài sản
                             </p>
                         </button>
 
@@ -412,41 +465,43 @@ export default function WalletsPage() {
                 )}
             </main>
 
-            {/* ===== MODAL GIỮ NGUYÊN 100% UI ===== */}
+            {/* ===== STANDARDIZED PREMIUM MODAL ===== */}
             {open && (
-                <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
 
-                    <div className="bg-[#1E293B]/90 border border-slate-700 rounded-2xl w-full max-w-lg">
+                    <div className="bg-[#0b1329]/95 backdrop-blur-2xl border border-slate-800/80 rounded-3xl w-full max-w-lg shadow-[0_0_50px_rgba(6,182,212,0.15)] overflow-hidden relative transform transition-all">
+                        {/* Radiant decorative top line */}
+                        <div className="h-1.5 w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500" />
 
                         {/* HEADER */}
-                        <div className="p-5 border-b border-slate-700 flex justify-between items-start">
-
+                        <div className="px-6 py-5 border-b border-slate-800/80 flex justify-between items-center bg-slate-900/20">
                             <div>
-                                <h3 className="text-xl font-bold text-cyan-400">
-                                    {mode === "create" ? "Tạo ví mới" : "Cập nhật ví"}
+                                <h3 className="text-xl font-extrabold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                                    {mode === "create" ? "Tạo tài khoản mới" : "Cập nhật tài khoản"}
                                 </h3>
 
                                 <p className="text-xs text-slate-400 mt-1">
                                     {mode === "create"
-                                        ? "Thêm ví để quản lý tài chính cá nhân"
-                                        : "Chỉnh sửa thông tin ví hiện tại"}
+                                        ? "Thêm tài khoản để quản lý tài chính cá nhân"
+                                        : "Chỉnh sửa thông tin tài khoản hiện tại"}
                                 </p>
                             </div>
 
                             <button
                                 onClick={() => setOpen(false)}
-                                className="text-slate-400 hover:text-white transition"
+                                className="w-8 h-8 rounded-full bg-slate-950 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-600 flex items-center justify-center transition-all duration-200 text-sm"
                             >
                                 ✕
                             </button>
                         </div>
 
                         {/* BODY */}
-                        <div className="p-5 space-y-5">
+                        <div className="p-6 space-y-6">
 
+                            {/* Tên ví */}
                             <div>
-                                <label className="text-sm text-slate-300 mb-2 block">
-                                    Tên ví
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
+                                    Tên tài khoản
                                 </label>
 
                                 <input
@@ -455,16 +510,18 @@ export default function WalletsPage() {
                                     onChange={(e) =>
                                         setForm({ ...form, name: e.target.value })
                                     }
-                                    placeholder="Ví MB Bank"
-                                    className="w-full bg-black/40 border border-slate-700 rounded-xl py-3 px-4 outline-none focus:ring-2 focus:ring-cyan-400"
+                                    placeholder="Tài khoản MB Bank"
+                                    className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl px-4 py-3 text-slate-200 placeholder-slate-650 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-inner"
                                 />
                             </div>
 
+                            {/* Số dư */}
                             <div>
-                                <label className="text-sm text-slate-300 mb-2 block">
-                                    Số dư
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
+                                    Số dư ban đầu
                                 </label>
-                                <div className="relative mt-2">
+                                <div className="relative">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 rounded-xl blur-sm" />
                                     <input
                                         type="number"
                                         value={form.balance}
@@ -472,16 +529,17 @@ export default function WalletsPage() {
                                             setForm({ ...form, balance: e.target.value })
                                         }
                                         placeholder="0"
-                                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-5 py-4 text-right text-2xl font-bold text-red-300 focus:border-cyan-500 outline-none"
+                                        className="relative w-full bg-slate-950/80 border border-slate-800/80 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-5 py-4 text-right text-3xl font-extrabold text-cyan-400 placeholder-cyan-500/30 transition-all duration-300 font-mono tracking-tight"
                                     />
-                                    <span className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 font-bold">
+                                    <span className="absolute left-5 top-1/2 -translate-y-1/2 text-xs font-bold text-cyan-500/60 uppercase tracking-wider">
                                         VND
                                     </span>
                                 </div>
                             </div>
 
+                            {/* Chọn icon */}
                             <div>
-                                <p className="text-sm text-slate-300 mb-3">
+                                <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-3">
                                     Chọn icon
                                 </p>
 
@@ -494,9 +552,10 @@ export default function WalletsPage() {
                                             onClick={() =>
                                                 setForm({ ...form, icon })
                                             }
-                                            className={`h-12 rounded-xl border text-xl ${form.icon === icon
-                                                ? "border-cyan-400 bg-cyan-500/10"
-                                                : "border-slate-700"
+                                            className={`h-12 rounded-xl border text-xl flex items-center justify-center transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95
+                                                ${form.icon === icon
+                                                    ? "border-cyan-400 bg-gradient-to-br from-cyan-500/20 to-blue-500/10 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]"
+                                                    : "border-slate-800 bg-slate-950 hover:border-slate-700 hover:bg-slate-900"
                                                 }`}
                                         >
                                             {icon}
@@ -505,14 +564,44 @@ export default function WalletsPage() {
                                 </div>
                             </div>
 
+                            {/* Màu sắc ví */}
+                            <div>
+                                <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-3">
+                                    Màu sắc tài khoản
+                                </p>
+
+                                <div className="flex gap-3 flex-wrap">
+                                    {["#06b6d4", "#f97316", "#3b82f6", "#10b981", "#a855f7", "#eab308", "#ef4444"].map((c) => (
+                                        <button
+                                            key={c}
+                                            type="button"
+                                            disabled={mode === "edit"}
+                                            onClick={() =>
+                                                setForm({ ...form, color: c })
+                                            }
+                                            className={`w-9 h-9 rounded-full border-2 transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed relative
+                                                ${form.color === c
+                                                    ? "border-white scale-110 shadow-[0_0_15px_rgba(255,255,255,0.4)]"
+                                                    : "border-transparent"
+                                                }`}
+                                            style={{ backgroundColor: c }}
+                                        >
+                                            {form.color === c && (
+                                                <div className="absolute inset-0.5 rounded-full border border-slate-950" />
+                                            )}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
                         </div>
 
                         {/* FOOTER */}
-                        <div className="p-5 border-t border-slate-700 flex gap-3">
+                        <div className="px-6 py-5 bg-slate-950/40 border-t border-slate-800/80 flex gap-3">
 
                             <button
                                 onClick={() => setOpen(false)}
-                                className="flex-1 py-3 rounded-xl bg-slate-700"
+                                className="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-800 text-slate-300 font-medium transition-all duration-200 active:scale-95"
                             >
                                 Hủy
                             </button>
@@ -523,9 +612,9 @@ export default function WalletsPage() {
                                         ? handleCreateWallet
                                         : handleUpdateWallet
                                 }
-                                className="flex-1 py-3 rounded-xl bg-cyan-500 text-black font-bold"
+                                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg shadow-cyan-500/20"
                             >
-                                Lưu ví
+                                Lưu tài khoản
                             </button>
 
                         </div>

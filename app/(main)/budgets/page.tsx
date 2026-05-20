@@ -427,29 +427,37 @@ export default function BudgetsPage() {
     };
 
     return (
-        <div className="bg-[#0F172A] min-h-screen text-white">
+        <div className="bg-[#05070f] min-h-screen text-white relative overflow-hidden">
+            {/* Ambient visual background glowing spots */}
+            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-violet-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
 
             <Sidebar />
             <Header />
 
-            <main className="ml-0 md:ml-64 pt-20 md:pt-24 p-4 md:p-8">
+            <main className="ml-64 pt-24 p-8 relative z-10">
 
                 {/* HEADER */}
-                <div className="mb-6 flex justify-between items-center">
-
+                <div className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-900/60 pb-6 relative">
+                    <div className="absolute bottom-0 left-0 w-32 h-[1px] bg-gradient-to-r from-cyan-500 to-transparent" />
                     <div>
-                        <h1 className="text-3xl font-bold mb-2">
-                            Danh sách ngân sách
-                        </h1>
+                        <div className="flex items-center gap-2.5">
+                            <h1 className="text-3xl font-black bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent tracking-tight">
+                                Ngân sách
+                            </h1>
+                            <span className="bg-cyan-500/10 text-cyan-400 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full border border-cyan-500/20 tracking-wider shadow-[0_0_10px_rgba(6,182,212,0.1)]">
+                                Budgets
+                            </span>
+                        </div>
 
-                        <p className="text-slate-400">
-                            Quản lý ngân sách của bạn
+                        <p className="text-xs text-slate-500 mt-1.5 font-medium tracking-wide">
+                            Lập kế hoạch ngân sách thông minh và kiểm soát các khoản chi tiêu
                         </p>
                     </div>
 
                     <button
                         onClick={openCreate}
-                        className="bg-cyan-500 text-black px-4 py-2 rounded-lg font-bold hover:bg-cyan-400"
+                        className="bg-cyan-500 text-black px-5 py-2.5 rounded-2xl font-bold hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-200"
                     >
                         + Tạo ngân sách
                     </button>
@@ -467,10 +475,10 @@ export default function BudgetsPage() {
                                     e.target.value
                                 )
                             }
-                            className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3"
+                            className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 outline-none transition text-slate-200"
                         >
                             <option value="all">
-                                Tất cả
+                                Tất cả danh mục
                             </option>
 
                             {categories
@@ -499,7 +507,7 @@ export default function BudgetsPage() {
                                     )
                                 )
                             }
-                            className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3"
+                            className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 outline-none transition text-slate-200"
                         >
                             {Array.from({
                                 length: 12,
@@ -523,7 +531,7 @@ export default function BudgetsPage() {
                                     )
                                 )
                             }
-                            className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-center"
+                            className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 text-center outline-none transition text-slate-200"
                         />
                     </div>
 
@@ -535,7 +543,7 @@ export default function BudgetsPage() {
                             )
                         }
                         placeholder="Tìm kiếm..."
-                        className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3"
+                        className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 outline-none transition text-slate-200"
                     />
                 </div>
 
@@ -552,108 +560,127 @@ export default function BudgetsPage() {
                         return (
                             <div
                                 key={b.id}
-                                className="bg-[#1E293B]/70 border border-slate-700 rounded-2xl p-5"
+                                className="bg-gradient-to-br from-slate-950/40 via-slate-900/40 to-slate-950/40 backdrop-blur-xl border border-slate-850 hover:border-slate-700/80 hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/5 rounded-3xl p-6 relative overflow-hidden transition-all duration-300 group flex flex-col justify-between h-[260px] shadow-[0_4px_25px_rgba(0,0,0,0.4)]"
                             >
-                                <div className="flex items-center gap-3 mb-4">
+                                <div>
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div
+                                            className="w-12 h-12 rounded-xl flex items-center justify-center text-xl border transition-all duration-300 group-hover:scale-110"
+                                            style={{
+                                                backgroundColor: `${b.color || "#06b6d4"}15`,
+                                                color: b.color || "#06b6d4",
+                                                borderColor: `${b.color || "#06b6d4"}30`,
+                                            }}
+                                        >
+                                            {b.icon || "💸"}
+                                        </div>
 
-                                    <div
-                                        className="w-12 h-12 rounded-xl flex items-center justify-center"
-                                        style={{
-                                            backgroundColor: `${b.color}20`,
-                                            color: b.color,
-                                        }}
-                                    >
-                                        <span className="material-symbols-outlined">
-                                            {b.icon}
+                                        <div>
+                                            <h3 className="font-bold text-lg text-slate-100 group-hover:text-cyan-400 transition-colors">
+                                                {b.name}
+                                            </h3>
+
+                                            <p className="text-sm text-slate-400 mt-0.5">
+                                                Tháng {b.month}/{b.year}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex justify-between text-base mb-2 mt-6 items-baseline">
+                                        <span className="text-slate-400 font-sans tabular-nums">
+                                            <span className="font-semibold text-slate-200 text-base">{b.spent.toLocaleString("vi-VN")}</span>
+                                            <span className="opacity-75 ml-0.5 mr-1.5">đ</span>
+                                            <span className="text-base text-slate-600 font-normal mx-1">/</span>
+                                            <span className="font-semibold text-slate-500 text-base">{b.limit.toLocaleString("vi-VN")}</span>
+                                            <span className="opacity-75 ml-0.5">đ</span>
+                                        </span>
+
+                                        <span className="font-bold font-sans tabular-nums text-base" style={{ color: b.color || "#06b6d4" }}>
+                                            {percent.toFixed(1)}%
                                         </span>
                                     </div>
 
-                                    <div>
-                                        <h3 className="font-bold">
-                                            {b.name}
-                                        </h3>
-
-                                        <p className="text-xs text-slate-400">
-                                            Tháng {b.month}/{b.year}
-                                        </p>
+                                    <div className="relative h-3.5 w-full bg-slate-950/85 border border-slate-850 rounded-full p-[2px] overflow-hidden shadow-inner">
+                                        <div
+                                            className="h-full rounded-full transition-all duration-500 relative"
+                                            style={{
+                                                width: `${percent}%`,
+                                                backgroundColor: b.color || "#06b6d4",
+                                                boxShadow: `0 0 10px ${b.color || "#06b6d4"}90`,
+                                            }}
+                                        >
+                                            {/* Subtle reflection shine */}
+                                            <div className="absolute inset-x-0 top-0 h-1 bg-white/20 rounded-full" />
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div className="flex justify-between text-sm mb-2">
-
-                                    <span className="text-slate-400">
-                                        {formatMoney(
-                                            b.spent
-                                        )}{" "}
-                                        /{" "}
-                                        {formatMoney(
-                                            b.limit
-                                        )}
-                                    </span>
-
-                                    <span className="text-cyan-400 font-bold">
-                                        {percent.toFixed(
-                                            1
-                                        )}
-                                        %
-                                    </span>
-                                </div>
-
-                                <div className="h-2 bg-slate-800 rounded-full">
-
-                                    <div
-                                        className="h-full bg-cyan-400"
-                                        style={{
-                                            width: `${percent}%`,
-                                        }}
-                                    />
-                                </div>
-
                                 {/* ACTIONS */}
-                                <div className="mt-5 pt-4 border-t border-slate-700 flex justify-end gap-2">
-
+                                <div className="mt-6 pt-4 border-t border-slate-800/80 flex justify-end gap-2">
                                     <button
-                                        onClick={() =>
-                                            handleEdit(
-                                                b
-                                            )
-                                        }
-                                        className="px-2 py-1 hover:text-cyan-400 transition"
+                                        onClick={() => handleEdit(b)}
+                                        className="text-slate-400 hover:text-cyan-400 transition p-1.5 rounded-lg hover:bg-slate-800/80"
+                                        title="Sửa ngân sách"
                                     >
                                         ✏️
                                     </button>
 
                                     <button
-                                        onClick={() =>
-                                            handleDelete(
-                                                b.id
-                                            )
-                                        }
-                                        className="px-2 py-1 hover:text-red-500 transition"
+                                        onClick={() => handleDelete(b.id)}
+                                        className="text-slate-400 hover:text-red-400 transition p-1.5 rounded-lg hover:bg-slate-800/80"
+                                        title="Xóa ngân sách"
                                     >
                                         🗑️
                                     </button>
                                 </div>
+
+                                <div
+                                    className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent group-hover:via-cyan-400 transition-all duration-300"
+                                    style={{
+                                        background: `linear-gradient(to right, transparent, ${b.color || "#06b6d4"}80, transparent)`
+                                    }}
+                                />
                             </div>
                         );
                     })}
+
+                    {/* ADD CARD TRIGGER */}
+                    <button
+                        onClick={openCreate}
+                        className="bg-gradient-to-br from-slate-950/40 via-slate-900/40 to-slate-950/40 border border-slate-800 border-dashed rounded-3xl p-6 h-[260px]
+                            flex flex-col items-center justify-center
+                            hover:border-cyan-400/60 hover:bg-slate-800/40 transition-all duration-300 group"
+                    >
+                        <div className="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-3xl mb-4 group-hover:scale-110 transition-transform">
+                            +
+                        </div>
+
+                        <p className="font-bold text-white text-lg">
+                            Tạo ngân sách
+                        </p>
+
+                        <p className="text-xs text-slate-400 mt-1 text-center max-w-[200px]">
+                            Thiết lập giới hạn chi tiêu theo danh mục
+                        </p>
+                    </button>
+
                 </div>
             </main>
 
-            {/* ===== MODAL ===== */}
+            {/* ===== STANDARDIZED PREMIUM MODAL ===== */}
             {open && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
 
-                    <div className="bg-[#1E293B]/90 border border-slate-700 rounded-2xl w-full max-w-lg">
+                    <div className="bg-[#0b1329]/95 backdrop-blur-2xl border border-slate-800/80 rounded-3xl w-full max-w-lg shadow-[0_0_50px_rgba(6,182,212,0.15)] overflow-hidden relative transform transition-all">
+                        {/* Radiant decorative top line */}
+                        <div className="h-1.5 w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500" />
 
                         {/* HEADER */}
-                        <div className="p-5 border-b border-slate-700 flex justify-between items-start">
+                        <div className="px-6 py-5 border-b border-slate-800/80 flex justify-between items-center bg-slate-900/20">
 
                             <div>
-                                <h3 className="text-xl font-bold text-cyan-400">
-                                    {editingId
-                                        ? "Sửa ngân sách"
-                                        : "Tạo ngân sách"}
+                                <h3 className="text-xl font-extrabold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                                    {editingId ? "Sửa ngân sách" : "Tạo ngân sách"}
                                 </h3>
 
                                 <p className="text-xs text-slate-400 mt-1">
@@ -665,65 +692,47 @@ export default function BudgetsPage() {
 
                             <button
                                 onClick={closeModal}
-                                className="text-slate-400 hover:text-white transition"
+                                className="w-8 h-8 rounded-full bg-slate-950 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-600 flex items-center justify-center transition-all duration-200 text-sm"
                             >
                                 ✕
                             </button>
                         </div>
 
                         {/* BODY */}
-                        <div className="p-5 space-y-5">
+                        <div className="p-6 space-y-6">
 
                             {/* CATEGORY */}
                             <div>
-
-                                <label className="text-sm text-slate-300 mb-2 block">
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
                                     Danh mục chi tiêu
                                 </label>
 
                                 <select
                                     disabled={editingId !== null}
-                                    value={
-                                        form.category_id
-                                    }
+                                    value={form.category_id}
                                     onChange={(e) =>
                                         setForm({
                                             ...form,
-                                            category_id:
-                                                e.target
-                                                    .value,
+                                            category_id: e.target.value,
                                         })
                                     }
-                                    className={`w-full bg-black/40 border border-slate-700 rounded-xl px-4 py-3 ${editingId
-                                        ? "opacity-50 cursor-not-allowed"
-                                        : ""
-                                        }`}
+                                    className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl px-4 py-3 text-slate-200 placeholder-slate-650 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-inner"
                                 >
-                                    <option value="">
+                                    <option value="" className="bg-slate-950 text-slate-400">
                                         Chọn danh mục
                                     </option>
 
                                     {categories
                                         .filter(
-                                            (c) =>
-                                                c.type ===
-                                                "expense"
+                                            (c) => c.type === "expense"
                                         )
                                         .map((c) => (
                                             <option
-                                                key={
-                                                    c.id
-                                                }
-                                                value={
-                                                    c.id
-                                                }
+                                                key={c.id}
+                                                value={c.id}
+                                                className="bg-slate-950 text-slate-200"
                                             >
-                                                {
-                                                    c.icon
-                                                }{" "}
-                                                {
-                                                    c.name
-                                                }
+                                                {c.icon} {c.name}
                                             </option>
                                         ))}
                                 </select>
@@ -731,32 +740,26 @@ export default function BudgetsPage() {
 
                             {/* LIMIT */}
                             <div>
-
-                                <label className="text-sm text-slate-300 mb-2 block">
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
                                     Ngân sách giới hạn
                                 </label>
 
-                                <div className="relative mt-2">
-
+                                <div className="relative">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 rounded-xl blur-sm" />
                                     <input
                                         type="number"
-                                        value={
-                                            form.limit
-                                        }
+                                        value={form.limit}
                                         onChange={(e) =>
                                             setForm({
                                                 ...form,
-                                                limit:
-                                                    e
-                                                        .target
-                                                        .value,
+                                                limit: e.target.value,
                                             })
                                         }
-                                        className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-right text-2xl font-bold text-red-300 focus:border-cyan-500 outline-none"
+                                        className="relative w-full bg-slate-950/80 border border-slate-800/80 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20 rounded-xl px-5 py-4 text-right text-3xl font-extrabold text-cyan-400 placeholder-cyan-500/30 transition-all duration-300 font-mono tracking-tight"
                                         placeholder="0"
                                     />
 
-                                    <span className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 font-bold">
+                                    <span className="absolute left-5 top-1/2 -translate-y-1/2 text-xs font-bold text-cyan-500/60 uppercase tracking-wider">
                                         VND
                                     </span>
                                 </div>
@@ -766,95 +769,62 @@ export default function BudgetsPage() {
                             <div className="grid grid-cols-2 gap-4">
 
                                 <div>
-
-                                    <label className="text-sm text-slate-300 mb-2 block">
+                                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
                                         Tháng
                                     </label>
 
                                     <select
                                         disabled={editingId !== null}
-                                        value={
-                                            form.month
-                                        }
+                                        value={form.month}
                                         onChange={(e) =>
                                             setForm({
                                                 ...form,
-                                                month:
-                                                    Number(
-                                                        e
-                                                            .target
-                                                            .value
-                                                    ),
+                                                month: Number(e.target.value),
                                             })
                                         }
-                                        className={`w-full bg-black/40 border border-slate-700 rounded-xl px-4 py-3 ${editingId
-                                                ? "opacity-50 cursor-not-allowed"
-                                                : ""
-                                            }`}
+                                        className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl px-4 py-3 text-slate-200 placeholder-slate-650 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-inner"
                                     >
                                         {Array.from({
                                             length: 12,
-                                        }).map(
-                                            (
-                                                _,
-                                                i
-                                            ) => (
-                                                <option
-                                                    key={
-                                                        i
-                                                    }
-                                                    value={
-                                                        i +
-                                                        1
-                                                    }
-                                                >
-                                                    Tháng{" "}
-                                                    {i +
-                                                        1}
-                                                </option>
-                                            )
-                                        )}
+                                        }).map((_, i) => (
+                                            <option
+                                                key={i}
+                                                value={i + 1}
+                                                className="bg-slate-950 text-slate-200"
+                                            >
+                                                Tháng {i + 1}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
 
                                 <div>
-
-                                    <label className="text-sm text-slate-300 mb-2 block">
+                                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
                                         Năm
                                     </label>
 
                                     <input
                                         disabled={editingId !== null}
                                         type="number"
-                                        value={
-                                            form.year
-                                        }
+                                        value={form.year}
                                         onChange={(e) =>
                                             setForm({
                                                 ...form,
-                                                year:
-                                                    Number(
-                                                        e
-                                                            .target
-                                                            .value
-                                                    ),
+                                                year: Number(e.target.value),
                                             })
                                         }
-                                        className={`w-full bg-black/40 border border-slate-700 rounded-xl px-4 py-3 text-center ${editingId
-                                                ? "opacity-50 cursor-not-allowed"
-                                                : ""
-                                            }`}
+                                        className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl px-4 py-3 text-center text-slate-200 placeholder-slate-650 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-inner"
                                     />
                                 </div>
                             </div>
                         </div>
 
                         {/* FOOTER */}
-                        <div className="p-5 border-t border-slate-700 flex gap-3">
+                        <div className="px-6 py-5 bg-slate-950/40 border-t border-slate-800/80 flex gap-3">
 
                             <button
                                 onClick={closeModal}
-                                className="flex-1 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 transition"
+                                className="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-800 text-slate-300 font-medium transition-all duration-200 active:scale-95"
                             >
                                 Hủy
                             </button>
@@ -862,7 +832,7 @@ export default function BudgetsPage() {
                             <button
                                 onClick={handleSave}
                                 disabled={saving}
-                                className="flex-1 py-3 rounded-xl bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition disabled:opacity-50"
+                                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg shadow-cyan-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {saving
                                     ? "Đang lưu..."

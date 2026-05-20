@@ -111,17 +111,63 @@ export default function ProfilePage() {
     };
 
     const handleAvatarUpload =
-        (e: React.ChangeEvent<HTMLInputElement>) => {
+        async (
+            e: React.ChangeEvent<HTMLInputElement>
+        ) => {
 
             const file =
                 e.target.files?.[0];
 
             if (!file) return;
 
-            const imageUrl =
-                URL.createObjectURL(file);
+            try {
 
-            setAvatar(imageUrl);
+                const formData =
+                    new FormData();
+
+                formData.append(
+                    "file",
+                    file
+                );
+
+                const res =
+                    await fetch(
+                        "/api/upload/avatar",
+                        {
+                            method:
+                                "POST",
+
+                            body:
+                                formData,
+                        }
+                    );
+
+                const data =
+                    await res.json();
+
+                if (!res.ok) {
+
+                    alert(
+                        data.message
+                    );
+
+                    return;
+                }
+
+                setAvatar(
+                    data.url
+                );
+
+            } catch (error) {
+
+                console.error(
+                    error
+                );
+
+                alert(
+                    "Upload avatar thất bại"
+                );
+            }
         };
 
     const handleUpdateProfile =
@@ -249,42 +295,51 @@ export default function ProfilePage() {
         };
 
     return (
-        <div className="bg-[#0F172A] min-h-screen text-white">
+        <div className="bg-[#05070f] min-h-screen text-white relative overflow-hidden">
+            {/* Ambient visual background glowing spots */}
+            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-violet-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
 
             <Sidebar />
-
             <Header />
 
-            <main className="ml-64 pt-24 p-8">
+            <main className="ml-64 pt-24 p-8 relative z-10">
 
-                <div className="mb-10">
-                    <h1 className="text-3xl font-bold mb-2">
-                        Hồ sơ cá nhân
-                    </h1>
+                {/* HEADER */}
+                <div className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-900/60 pb-6 relative">
+                    <div className="absolute bottom-0 left-0 w-32 h-[1px] bg-gradient-to-r from-cyan-500 to-transparent" />
+                    <div>
+                        <div className="flex items-center gap-2.5">
+                            <h1 className="text-3xl font-black bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent tracking-tight">
+                                Hồ sơ cá nhân
+                            </h1>
+                            <span className="bg-cyan-500/10 text-cyan-400 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full border border-cyan-500/20 tracking-wider shadow-[0_0_10px_rgba(6,182,212,0.1)]">
+                                Profile
+                            </span>
+                        </div>
 
-                    <p className="text-slate-400">
-                        Quản lý thông tin tài khoản và bảo mật
-                    </p>
+                        <p className="text-xs text-slate-500 mt-1.5 font-medium tracking-wide">
+                            Quản lý thông tin tài khoản và bảo mật hệ thống
+                        </p>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
 
                     {/* PROFILE */}
-                    <section className="bg-[#1E293B]/70 border border-slate-700 rounded-2xl p-8 backdrop-blur-xl">
-
+                    <section className="bg-gradient-to-br from-slate-950/40 via-slate-900/40 to-slate-950/40 backdrop-blur-xl border border-slate-850 rounded-3xl p-8 shadow-[0_4px_25px_rgba(0,0,0,0.4)] relative overflow-hidden transition-all duration-300">
                         <div className="flex items-center gap-4 mb-8">
-
-                            <div className="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-2xl">
+                            <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-2xl border border-cyan-500/20">
                                 👤
                             </div>
 
                             <div>
-                                <h2 className="text-xl font-bold">
+                                <h2 className="text-xl font-black bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
                                     Thông tin cá nhân
                                 </h2>
 
-                                <p className="text-sm text-slate-400">
-                                    Quản lý thông tin tài khoản
+                                <p className="text-xs text-slate-500 mt-0.5">
+                                    Cập nhật các thông tin cơ bản của bạn
                                 </p>
                             </div>
                         </div>
@@ -295,17 +350,16 @@ export default function ProfilePage() {
                         >
 
                             {/* AVATAR */}
-                            <div className="flex justify-center">
-
+                            <div className="flex justify-center mb-6">
                                 <div className="relative">
-
+                                    <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-cyan-500 to-violet-500 blur-md opacity-25" />
                                     <img
                                         src={
                                             avatar ||
                                             "https://i.pravatar.cc/150"
                                         }
                                         alt="avatar"
-                                        className="w-28 h-28 rounded-full object-cover border-4 border-cyan-500/20"
+                                        className="relative w-28 h-28 rounded-full object-cover border-4 border-slate-900/80 shadow-2xl"
                                     />
 
                                     <button
@@ -313,7 +367,7 @@ export default function ProfilePage() {
                                         onClick={() =>
                                             fileInputRef.current?.click()
                                         }
-                                        className="absolute bottom-0 right-0 bg-cyan-500 hover:bg-cyan-400 text-black w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
+                                        className="absolute bottom-0 right-0 bg-cyan-500 hover:bg-cyan-400 text-black w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110 active:scale-95 duration-200"
                                     >
                                         📷
                                     </button>
@@ -332,13 +386,12 @@ export default function ProfilePage() {
 
                             {/* NAME */}
                             <div>
-                                <label className="text-sm text-slate-300 mb-2 block">
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
                                     Họ và tên
                                 </label>
 
                                 <div className="relative">
-
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
                                         👤
                                     </span>
 
@@ -350,20 +403,19 @@ export default function ProfilePage() {
                                                 e.target.value
                                             )
                                         }
-                                        className="w-full bg-black/40 border border-slate-700 rounded-xl py-3 pl-12 pr-4 outline-none focus:ring-2 focus:ring-cyan-400"
+                                        className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl py-3 pl-12 pr-4 text-slate-200 transition-all duration-300 shadow-inner"
                                     />
                                 </div>
                             </div>
 
                             {/* USERNAME */}
                             <div>
-                                <label className="text-sm text-slate-300 mb-2 block">
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
                                     Tên đăng nhập
                                 </label>
 
-                                <div className="relative">
-
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2">
+                                <div className="relative opacity-65">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-650">
                                         👤
                                     </span>
 
@@ -374,20 +426,19 @@ export default function ProfilePage() {
                                             profile?.username ||
                                             ""
                                         }
-                                        className="w-full bg-slate-800/50 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-slate-500"
+                                        className="w-full bg-slate-950 border border-slate-900 rounded-xl py-3 pl-12 pr-4 text-slate-500 cursor-not-allowed"
                                     />
                                 </div>
                             </div>
 
                             {/* PHONE */}
                             <div>
-                                <label className="text-sm text-slate-300 mb-2 block">
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
                                     Số điện thoại
                                 </label>
 
-                                <div className="relative">
-
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2">
+                                <div className="relative opacity-65">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-655">
                                         📞
                                     </span>
 
@@ -398,20 +449,19 @@ export default function ProfilePage() {
                                             profile?.phone ||
                                             ""
                                         }
-                                        className="w-full bg-slate-800/50 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-slate-500"
+                                        className="w-full bg-slate-950 border border-slate-900 rounded-xl py-3 pl-12 pr-4 text-slate-500 cursor-not-allowed"
                                     />
                                 </div>
                             </div>
 
                             {/* BIRTHDAY */}
                             <div>
-                                <label className="text-sm text-slate-300 mb-2 block">
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
                                     Ngày sinh
                                 </label>
 
                                 <div className="relative">
-
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
                                         🎂
                                     </span>
 
@@ -423,28 +473,26 @@ export default function ProfilePage() {
                                                 e.target.value
                                             )
                                         }
-                                        className="w-full bg-black/40 border border-slate-700 rounded-xl py-3 pl-12 pr-4 outline-none focus:ring-2 focus:ring-cyan-400"
+                                        className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl py-3 pl-12 pr-4 text-slate-200 transition-all duration-300 shadow-inner"
                                     />
                                 </div>
                             </div>
 
                             {/* GENDER */}
                             <div>
-
-                                <label className="text-sm text-slate-300 mb-2 block">
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-3">
                                     Giới tính
                                 </label>
 
                                 <div className="grid grid-cols-3 gap-3">
-
                                     <button
                                         type="button"
                                         onClick={() =>
                                             setGender("male")
                                         }
-                                        className={`py-3 rounded-xl border transition ${gender === "male"
-                                            ? "border-cyan-400 bg-cyan-500/10 text-cyan-400"
-                                            : "border-slate-700 text-slate-400"
+                                        className={`py-3 rounded-xl border font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 ${gender === "male"
+                                            ? "border-cyan-500/80 bg-cyan-500/10 text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.1)]"
+                                            : "border-slate-800 bg-slate-950 text-slate-400 hover:bg-slate-900"
                                             }`}
                                     >
                                         👨 Nam
@@ -455,9 +503,9 @@ export default function ProfilePage() {
                                         onClick={() =>
                                             setGender("female")
                                         }
-                                        className={`py-3 rounded-xl border transition ${gender === "female"
-                                            ? "border-pink-400 bg-pink-500/10 text-pink-400"
-                                            : "border-slate-700 text-slate-400"
+                                        className={`py-3 rounded-xl border font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 ${gender === "female"
+                                            ? "border-pink-500/80 bg-pink-500/10 text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.1)]"
+                                            : "border-slate-800 bg-slate-950 text-slate-400 hover:bg-slate-900"
                                             }`}
                                     >
                                         👩 Nữ
@@ -468,20 +516,19 @@ export default function ProfilePage() {
                                         onClick={() =>
                                             setGender("other")
                                         }
-                                        className={`py-3 rounded-xl border transition ${gender === "other"
-                                            ? "border-purple-400 bg-purple-500/10 text-purple-400"
-                                            : "border-slate-700 text-slate-400"
+                                        className={`py-3 rounded-xl border font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 ${gender === "other"
+                                            ? "border-purple-500/80 bg-purple-500/10 text-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.1)]"
+                                            : "border-slate-800 bg-slate-950 text-slate-400 hover:bg-slate-900"
                                             }`}
                                     >
                                         🌈 Khác
                                     </button>
-
                                 </div>
                             </div>
 
                             <button
                                 type="submit"
-                                className="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-semibold py-3 rounded-xl transition"
+                                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg shadow-cyan-500/20"
                             >
                                 Lưu thông tin cá nhân
                             </button>
@@ -490,21 +537,19 @@ export default function ProfilePage() {
                     </section>
 
                     {/* PASSWORD */}
-                    <section className="bg-[#1E293B]/70 border border-slate-700 rounded-2xl p-8 backdrop-blur-xl">
-
+                    <section className="bg-gradient-to-br from-slate-950/40 via-slate-900/40 to-slate-950/40 backdrop-blur-xl border border-slate-850 rounded-3xl p-8 shadow-[0_4px_25px_rgba(0,0,0,0.4)] relative overflow-hidden transition-all duration-300">
                         <div className="flex items-center gap-4 mb-8">
-
-                            <div className="w-14 h-14 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-400 text-2xl">
+                            <div className="w-14 h-14 rounded-2xl bg-orange-500/10 flex items-center justify-center text-orange-400 text-2xl border border-orange-500/20">
                                 🔒
                             </div>
 
                             <div>
-                                <h2 className="text-xl font-bold">
+                                <h2 className="text-xl font-black bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
                                     Đổi mật khẩu
                                 </h2>
 
-                                <p className="text-sm text-slate-400">
-                                    Bảo mật tài khoản của bạn
+                                <p className="text-xs text-slate-500 mt-0.5">
+                                    Giữ tài khoản của bạn được bảo mật tuyệt đối
                                 </p>
                             </div>
                         </div>
@@ -516,14 +561,12 @@ export default function ProfilePage() {
 
                             {/* CURRENT PASSWORD */}
                             <div>
-
-                                <label className="text-sm text-gray-300 mb-1 block">
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
                                     Mật khẩu hiện tại
                                 </label>
 
                                 <div className="relative">
-
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
                                         🔒
                                     </span>
 
@@ -540,7 +583,7 @@ export default function ProfilePage() {
                                                 e.target.value
                                             )
                                         }
-                                        className="w-full bg-black/60 border border-gray-700 rounded-lg py-3 pl-10 pr-12 text-white outline-none focus:ring-2 focus:ring-cyan-400"
+                                        className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl py-3 pl-12 pr-12 text-slate-200 transition-all duration-300 shadow-inner"
                                     />
 
                                     <button
@@ -550,7 +593,7 @@ export default function ProfilePage() {
                                                 !showCurrent
                                             )
                                         }
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
                                     >
                                         {
                                             showCurrent
@@ -558,20 +601,17 @@ export default function ProfilePage() {
                                                 : "🙈"
                                         }
                                     </button>
-
                                 </div>
                             </div>
 
                             {/* NEW PASSWORD */}
                             <div>
-
-                                <label className="text-sm text-gray-300 mb-1 block">
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
                                     Mật khẩu mới
                                 </label>
 
                                 <div className="relative">
-
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
                                         🔒
                                     </span>
 
@@ -588,7 +628,7 @@ export default function ProfilePage() {
                                                 e.target.value
                                             )
                                         }
-                                        className="w-full bg-black/60 border border-gray-700 rounded-lg py-3 pl-10 pr-12 text-white outline-none focus:ring-2 focus:ring-cyan-400"
+                                        className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl py-3 pl-12 pr-12 text-slate-200 transition-all duration-300 shadow-inner"
                                     />
 
                                     <button
@@ -598,7 +638,7 @@ export default function ProfilePage() {
                                                 !showNew
                                             )
                                         }
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
                                     >
                                         {
                                             showNew
@@ -606,20 +646,17 @@ export default function ProfilePage() {
                                                 : "🙈"
                                         }
                                     </button>
-
                                 </div>
                             </div>
 
                             {/* CONFIRM PASSWORD */}
                             <div>
-
-                                <label className="text-sm text-gray-300 mb-1 block">
-                                    Xác nhận mật khẩu
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
+                                    Xác nhận mật khẩu mới
                                 </label>
 
                                 <div className="relative">
-
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
                                         🔒
                                     </span>
 
@@ -636,7 +673,7 @@ export default function ProfilePage() {
                                                 e.target.value
                                             )
                                         }
-                                        className="w-full bg-black/60 border border-gray-700 rounded-lg py-3 pl-10 pr-12 text-white outline-none focus:ring-2 focus:ring-cyan-400"
+                                        className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl py-3 pl-12 pr-12 text-slate-200 transition-all duration-300 shadow-inner"
                                     />
 
                                     <button
@@ -646,7 +683,7 @@ export default function ProfilePage() {
                                                 !showConfirm
                                             )
                                         }
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
                                     >
                                         {
                                             showConfirm
@@ -654,19 +691,17 @@ export default function ProfilePage() {
                                                 : "🙈"
                                         }
                                     </button>
-
                                 </div>
                             </div>
 
                             <button
                                 type="submit"
-                                className="w-full border border-cyan-500 text-cyan-400 hover:bg-cyan-500/10 font-semibold py-3 rounded-xl transition"
+                                className="w-full py-3.5 rounded-xl border border-cyan-500/80 hover:bg-cyan-500/10 text-cyan-400 font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95"
                             >
                                 Cập nhật mật khẩu
                             </button>
 
                         </form>
-
                     </section>
 
                 </div>

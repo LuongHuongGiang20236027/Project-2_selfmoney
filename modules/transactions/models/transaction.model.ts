@@ -118,7 +118,6 @@ export const updateTransaction = async ({
     transaction_id,
     amount,
     note,
-
 }: {
     transaction_id: number;
     amount?: number;
@@ -129,15 +128,13 @@ export const updateTransaction = async ({
         `
         UPDATE transactions
         SET
-           
-            amount = COALESCE($3, amount),
-            note = COALESCE($4, note),
+            amount = COALESCE($1, amount),
+            note = COALESCE($2, note),
             updated_at = NOW()
-        WHERE id = $6
+        WHERE id = $3
         RETURNING *
         `,
         [
-
             amount ?? null,
             note ?? null,
             transaction_id,

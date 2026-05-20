@@ -175,6 +175,37 @@ export const updateTransactionService =
             );
         }
 
+        // Update wallet balance if amount changed
+        if (amount !== undefined && amount !== null) {
+            const diff = Number(amount) - Number(transaction.amount);
+            if (diff !== 0) {
+                const category = await findCategoryById(transaction.category_id);
+                if (!category) {
+                    throw new Error("Category không tồn tại");
+                }
+
+                if (category.type === "income") {
+                    await pool.query(
+                        `
+                        UPDATE wallets
+                        SET balance = balance + $1
+                        WHERE id = $2
+                        `,
+                        [diff, transaction.wallet_id]
+                    );
+                } else {
+                    await pool.query(
+                        `
+                        UPDATE wallets
+                        SET balance = balance - $1
+                        WHERE id = $2
+                        `,
+                        [diff, transaction.wallet_id]
+                    );
+                }
+            }
+        }
+
         return await updateTransaction({
             transaction_id,
             amount,
@@ -209,6 +240,33 @@ export const deleteTransactionService =
         ) {
             throw new Error(
                 "Không có quyền"
+            );
+        }
+
+        const category = await findCategoryById(transaction.category_id);
+        if (!category) {
+            throw new Error("Category không tồn tại");
+        }
+
+        // Revert wallet balance before soft deletion
+        const amount = Number(transaction.amount);
+        if (category.type === "income") {
+            await pool.query(
+                `
+                UPDATE wallets
+                SET balance = balance - $1
+                WHERE id = $2
+                `,
+                [amount, transaction.wallet_id]
+            );
+        } else {
+            await pool.query(
+                `
+                UPDATE wallets
+                SET balance = balance + $1
+                WHERE id = $2
+                `,
+                [amount, transaction.wallet_id]
             );
         }
 

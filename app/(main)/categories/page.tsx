@@ -172,29 +172,47 @@ export default function CategoryPage() {
 
     const colors = ["#06b6d4", "#f97316", "#3b82f6", "#10b981", "#a855f7", "#eab308", "#ec4899", "#ef4444", "#6366f1", "#d946ef", "#f59e0b", "#84cc16", "#14b8a6", "#64748b"];
 
+    const formatMoney = (v: number) =>
+        v.toLocaleString("vi-VN") + "đ";
+
     return (
-        <div className="bg-[#0F172A] min-h-screen text-white">
+        <div className="bg-[#05070f] min-h-screen text-white relative overflow-hidden">
+            {/* Ambient visual background glowing spots */}
+            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-violet-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
+
             <Sidebar />
             <Header />
 
-            <main className="ml-64 pt-24 p-8">
+            <main className="ml-64 pt-24 p-8 relative z-10">
 
                 {/* HEADER */}
-                <div className="mb-10">
-                    <h1 className="text-3xl font-bold mb-2">Danh mục</h1>
-                    <p className="text-slate-400">
-                        Quản lý danh mục thu chi của bạn
-                    </p>
+                <div className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-900/60 pb-6 relative">
+                    <div className="absolute bottom-0 left-0 w-32 h-[1px] bg-gradient-to-r from-cyan-500 to-transparent" />
+                    <div>
+                        <div className="flex items-center gap-2.5">
+                            <h1 className="text-3xl font-black bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent tracking-tight">
+                                Danh mục
+                            </h1>
+                            <span className="bg-cyan-500/10 text-cyan-400 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full border border-cyan-500/20 tracking-wider shadow-[0_0_10px_rgba(6,182,212,0.1)]">
+                                Categories
+                            </span>
+                        </div>
+
+                        <p className="text-xs text-slate-500 mt-1.5 font-medium tracking-wide">
+                            Quản lý danh mục thu chi thông minh của bạn
+                        </p>
+                    </div>
                 </div>
 
-                {/* SEARCH */}
+                {/* SEARCH & FILTER */}
                 <div className="mb-6 flex items-center justify-between gap-4">
                     <input
                         type="text"
                         placeholder="Tìm kiếm danh mục..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full md:w-80 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3"
+                        className="w-full md:w-80 bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 outline-none transition text-slate-200"
                     />
 
                     {/* BUTTON */}
@@ -206,15 +224,13 @@ export default function CategoryPage() {
                     </button>
                 </div>
 
-
-
                 {/* TABS */}
-                <div className="flex gap-8 border-b border-slate-700 mb-8">
+                <div className="flex gap-8 border-b border-slate-800 mb-8">
                     <button
                         onClick={() => setTab("expense")}
-                        className={`pb-3 font-bold ${tab === "expense"
+                        className={`pb-3 font-bold transition-colors ${tab === "expense"
                             ? "text-cyan-400 border-b-2 border-cyan-400"
-                            : "text-slate-400"
+                            : "text-slate-400 hover:text-slate-200"
                             }`}
                     >
                         💳 Chi tiêu
@@ -222,9 +238,9 @@ export default function CategoryPage() {
 
                     <button
                         onClick={() => setTab("income")}
-                        className={`pb-3 font-bold ${tab === "income"
+                        className={`pb-3 font-bold transition-colors ${tab === "income"
                             ? "text-green-400 border-b-2 border-green-400"
-                            : "text-slate-400"
+                            : "text-slate-400 hover:text-slate-200"
                             }`}
                     >
                         🏦 Thu nhập
@@ -240,84 +256,102 @@ export default function CategoryPage() {
                         {filtered.map((item) => (
                             <div
                                 key={item.id}
-                                className="bg-[#1E293B]/70 border border-slate-700 rounded-2xl p-6 backdrop-blur-xl hover:border-cyan-400/40 transition-all flex flex-col"
+                                className="bg-gradient-to-br from-slate-950/40 via-slate-900/40 to-slate-950/40 backdrop-blur-xl border border-slate-850 hover:border-slate-700/80 hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/5 rounded-3xl p-6 relative overflow-hidden transition-all duration-300 group flex flex-col justify-between h-[260px] shadow-[0_4px_25px_rgba(0,0,0,0.4)]"
                             >
-                                <div className="flex items-center justify-between mb-4">
+                                <div>
+                                    <div className="flex gap-4 items-start mb-5">
+                                        {/* Icon with radial glow */}
+                                        <div className="relative select-none flex-shrink-0">
+                                            {/* Color glow backdrop */}
+                                            <div 
+                                                className="absolute inset-0 rounded-2xl blur-md opacity-20 group-hover:opacity-40 transition-all duration-300 animate-pulse"
+                                                style={{ backgroundColor: item.color || "#06b6d4" }}
+                                            />
+                                            <div
+                                                className="relative w-14 h-14 rounded-2xl flex items-center justify-center border transition-all duration-300 group-hover:scale-105"
+                                                style={{
+                                                    color: item.color || "#06b6d4",
+                                                    backgroundColor: `${item.color || "#06b6d4"}15`,
+                                                    borderColor: `${item.color || "#06b6d4"}35`,
+                                                }}
+                                            >
+                                                <span className="text-3xl">{item.icon || "📁"}</span>
+                                            </div>
+                                        </div>
 
-                                    <div
-                                        className="w-12 h-12 rounded-xl flex items-center justify-center"
-                                        style={{
-                                            backgroundColor: `${item.color || "#06b6d4"}20`,
-                                            color: item.color || "#06b6d4",
-                                        }}
-                                    >
-                                        <span className="text-xl">{item.icon}</span>
+                                        {/* Right text container */}
+                                        <div className="flex-1 min-w-0">
+                                            <h3 className="font-extrabold text-lg text-slate-100 group-hover:text-white transition-colors duration-200 truncate">
+                                                {item.name}
+                                            </h3>
+
+                                            <div className="mt-1.5">
+                                                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-950/80 border border-slate-800/80 shadow-inner transition-all duration-300 inline-block w-fit ${
+                                                    item.type === "income"
+                                                        ? "text-green-400 group-hover:border-green-500/30"
+                                                        : "text-rose-400 group-hover:border-rose-500/30"
+                                                }`}>
+                                                    {item.type === "income" ? "Thu nhập" : "Chi tiêu"}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                    <span className="text-xs text-slate-400">
-                                        {item.created_at
-                                            ? new Date(item.created_at).toLocaleDateString("vi-VN")
-                                            : ""}
-                                    </span>
-
                                 </div>
 
-                                <h3 className="text-xl font-bold mb-1">
-                                    {item.name}
-                                </h3>
-
-                                <p className="text-sm text-slate-400">
-                                    {item.type === "income" ? "Thu nhập" : "Chi tiêu"}
-                                </p>
-
-                                {/* TOTAL */}
-                                <div className="mt-4 mb-6">
-                                    <p className="text-xs uppercase text-slate-500 mb-1">
+                                <div className="mt-4">
+                                    <p className="text-xs uppercase text-slate-500 mb-1 font-semibold tracking-wider">
                                         Tổng giao dịch
                                     </p>
 
                                     <p
-                                        className={`text-2xl font-bold ${item.type === "income"
-                                            ? "text-green-400"
-                                            : "text-red-400"
+                                        className={`text-3xl font-sans tabular-nums flex items-baseline gap-0.5 transition-all duration-300 ${item.type === "income"
+                                            ? "text-green-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.15)] group-hover:text-green-300"
+                                            : "text-rose-400 drop-shadow-[0_0_10px_rgba(251,113,133,0.15)] group-hover:text-rose-300"
                                             }`}
                                     >
-                                        {item.type === "income" ? "+" : "-"}
-                                        {Number(item.total_amount || 0).toLocaleString()}đ
+                                        <span className="text-xl font-semibold opacity-85 leading-none mr-0.5">{item.type === "income" ? "+" : "-"}</span>
+                                        <span className="text-3xl font-black tracking-tight leading-none">{Number(item.total_amount || 0).toLocaleString("vi-VN")}</span>
+                                        <span className="text-xl font-semibold opacity-75 ml-0.5 leading-none">đ</span>
                                     </p>
-                                </div>
 
-                                <div className="mt-auto flex justify-end gap-2 pt-4 border-t border-slate-700">
-
-
-                                    <button
-                                        onClick={() => handleDelete(item.id)}
-                                        className="px-2 py-1 hover:text-red-500 transition"
-                                    >
-                                        🗑️
-                                    </button>
+                                    <div className="mt-4 pt-4 border-t border-slate-800/60 flex justify-between items-center h-8">
+                                        <span className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">
+                                            {item.created_at
+                                                ? new Date(item.created_at).toLocaleDateString("vi-VN")
+                                                : "Danh mục"}
+                                        </span>
+                                        {/* Slide-in and fade-in Actions */}
+                                        <div className="flex gap-2 opacity-0 translate-x-3 scale-95 group-hover:opacity-100 group-hover:translate-x-0 group-hover:scale-100 transition-all duration-300 origin-right">
+                                            <button
+                                                onClick={() => handleDelete(item.id)}
+                                                className="text-slate-400 hover:text-red-400 transition p-1.5 rounded-lg hover:bg-slate-800/80"
+                                                title="Xóa danh mục"
+                                            >
+                                                🗑️
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         ))}
 
-                        {/* =========================
-                            ADD CARD (GIỐNG WALLET)
-                        ========================= */}
                         {/* ADD BUTTON */}
                         <button
                             onClick={openCreate}
-                            className="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 flex flex-col items-center justify-center hover:border-cyan-400 hover:bg-slate-800/40 transition min-h-[200px]"
+                            className="bg-gradient-to-br from-slate-950/40 via-slate-900/40 to-slate-950/40 border border-slate-800 border-dashed rounded-3xl p-6 h-[260px]
+                                flex flex-col items-center justify-center
+                                hover:border-cyan-400/60 hover:bg-slate-800/40 transition-all duration-300 group"
                         >
-                            <div className="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-3xl mb-3">
+                            <div className="w-14 h-14 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-3xl mb-4 group-hover:scale-110 transition-transform">
                                 +
                             </div>
 
-                            <p className="font-bold text-white">
+                            <p className="font-bold text-white text-lg">
                                 Thêm danh mục
                             </p>
 
-                            <p className="text-xs text-slate-400 mt-1">
-                                Tạo danh mục mới
+                            <p className="text-xs text-slate-400 mt-1 text-center max-w-[200px]">
+                                Tạo danh mục mới cho thu nhập hoặc chi tiêu
                             </p>
                         </button>
 
@@ -325,45 +359,46 @@ export default function CategoryPage() {
                 )}
             </main>
 
-            {/* ================= MODAL ================= */}
+            {/* ================= STANDARDIZED PREMIUM MODAL ================= */}
             {open && (
-                <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
 
-                    <div className="bg-[#1E293B]/90 border border-slate-700 rounded-2xl w-full max-w-lg">
+                    <div className="bg-[#0b1329]/95 backdrop-blur-2xl border border-slate-800/80 rounded-3xl w-full max-w-lg shadow-[0_0_50px_rgba(6,182,212,0.15)] overflow-hidden relative transform transition-all">
+                        {/* Radiant decorative top line */}
+                        <div className="h-1.5 w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500" />
 
-                        {/* ================= HEADER ================= */}
-                        <div className="p-5 border-b border-slate-700 flex justify-between items-start">
-
+                        {/* HEADER */}
+                        <div className="px-6 py-5 border-b border-slate-800/80 flex justify-between items-center bg-slate-900/20">
                             <div>
-                                <h3 className="text-xl font-bold text-cyan-400">
-                                    Tạo danh mục
+                                <h3 className="text-xl font-extrabold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                                    Tạo danh mục mới
                                 </h3>
 
                                 <p className="text-xs text-slate-400 mt-1">
-                                    Thêm danh mục mới cho thu nhập hoặc chi tiêu
+                                    Thêm danh mục để phân loại thu chi cá nhân
                                 </p>
                             </div>
 
                             <button
                                 onClick={() => setOpen(false)}
-                                className="text-slate-400 hover:text-white transition"
+                                className="w-8 h-8 rounded-full bg-slate-950 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-600 flex items-center justify-center transition-all duration-200 text-sm"
                             >
                                 ✕
                             </button>
                         </div>
 
-                        {/* ================= BODY ================= */}
-                        <div className="p-5 space-y-5">
+                        {/* BODY */}
+                        <div className="p-6 space-y-6">
 
-                            {/* NAME */}
+                            {/* Tên danh mục */}
                             <div>
-                                <label className="text-sm text-slate-300 mb-2 block">
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
                                     Tên danh mục
                                 </label>
 
                                 <input
-                                    className="w-full bg-black/40 border border-slate-700 rounded-xl py-3 px-4 outline-none focus:ring-2 focus:ring-cyan-400"
-                                    placeholder="VD: Ăn uống, Lương, Thu nhập..."
+                                    className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl px-4 py-3 text-slate-200 placeholder-slate-650 transition-all duration-300 shadow-inner"
+                                    placeholder="VD: Ăn uống, Lương, Mua sắm..."
                                     value={form.name}
                                     onChange={(e) =>
                                         setForm({ ...form, name: e.target.value })
@@ -371,59 +406,62 @@ export default function CategoryPage() {
                                 />
                             </div>
 
-                            {/* TYPE */}
+                            {/* Loại danh mục */}
                             <div>
-                                <label className="text-sm text-slate-300 mb-2 block">
+                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-3">
                                     Loại danh mục
                                 </label>
 
-                                <div className="flex gap-2">
+                                <div className="flex gap-3">
                                     <button
+                                        type="button"
                                         onClick={() =>
                                             setForm({ ...form, type: "expense" })
                                         }
-                                        className={`flex-1 p-3 rounded-xl transition font-bold ${form.type === "expense"
-                                            ? "bg-cyan-500 text-black"
-                                            : "bg-slate-700"
+                                        className={`flex-1 py-3 rounded-xl transition font-bold border transition-all duration-300 hover:scale-[1.02] active:scale-95 ${form.type === "expense"
+                                            ? "bg-red-500/20 border-red-500/80 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.15)]"
+                                            : "bg-slate-950 border-slate-800 text-slate-400 hover:bg-slate-900 hover:border-slate-700"
                                             }`}
                                     >
                                         💳 Chi tiêu
                                     </button>
 
                                     <button
-
+                                        type="button"
                                         onClick={() =>
                                             setForm({ ...form, type: "income" })
                                         }
-                                        className={`flex-1 p-3 rounded-xl transition font-bold ${form.type === "income"
-                                            ? "bg-green-500 text-black"
-                                            : "bg-slate-700"
-                                            } }`}
+                                        className={`flex-1 py-3 rounded-xl transition font-bold border transition-all duration-300 hover:scale-[1.02] active:scale-95 ${form.type === "income"
+                                            ? "bg-green-500/20 border-green-500/80 text-green-400 shadow-[0_0_15px_rgba(16,185,129,0.15)]"
+                                            : "bg-slate-950 border-slate-800 text-slate-400 hover:bg-slate-900 hover:border-slate-700"
+                                            }`}
                                     >
                                         🏦 Thu nhập
                                     </button>
                                 </div>
                             </div>
 
-                            {/* ICON */}
+                            {/* Chọn icon */}
                             <div>
-                                <label className="text-sm text-slate-300 mb-2 block">
-                                    Icon
-                                </label>
+                                <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-3">
+                                    Chọn icon
+                                </p>
 
-                                <div className="grid grid-cols-6 gap-2">
+                                <div className="grid grid-cols-6 gap-3">
                                     {(form.type === "expense"
                                         ? expenseIcons
                                         : incomeIcons
                                     ).map((ic) => (
                                         <button
                                             key={ic}
+                                            type="button"
                                             onClick={() =>
                                                 setForm({ ...form, icon: ic })
                                             }
-                                            className={`p-3 rounded-lg border text-xl ${form.icon === ic
-                                                ? "border-cyan-400 bg-cyan-500/10"
-                                                : "border-slate-700"
+                                            className={`h-12 rounded-xl border text-xl flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95
+                                                ${form.icon === ic
+                                                    ? "border-cyan-400 bg-gradient-to-br from-cyan-500/20 to-blue-500/10 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.25)]"
+                                                    : "border-slate-800 bg-slate-950 hover:border-slate-700 hover:bg-slate-900"
                                                 }`}
                                         >
                                             {ic}
@@ -432,44 +470,50 @@ export default function CategoryPage() {
                                 </div>
                             </div>
 
-                            {/* COLOR */}
+                            {/* Màu sắc */}
                             <div>
-                                <label className="text-sm text-slate-300 mb-2 block">
-                                    Màu sắc
-                                </label>
+                                <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-3">
+                                    Màu sắc danh mục
+                                </p>
 
-                                <div className="flex gap-2 flex-wrap">
+                                <div className="flex gap-3 flex-wrap">
                                     {colors.map((c) => (
                                         <button
                                             key={c}
+                                            type="button"
                                             onClick={() =>
                                                 setForm({ ...form, color: c })
                                             }
-                                            className={`w-9 h-9 rounded-full border-2 transition ${form.color === c
-                                                ? "border-white scale-110"
-                                                : "border-transparent"
+                                            className={`w-9 h-9 rounded-full border-2 transition-all duration-300 hover:scale-110 relative
+                                                ${form.color === c
+                                                    ? "border-white scale-110 shadow-[0_0_15px_rgba(255,255,255,0.4)]"
+                                                    : "border-transparent"
                                                 }`}
                                             style={{ backgroundColor: c }}
-                                        />
+                                        >
+                                            {form.color === c && (
+                                                <div className="absolute inset-0.5 rounded-full border border-slate-950" />
+                                            )}
+                                        </button>
                                     ))}
                                 </div>
                             </div>
 
                         </div>
 
-                        {/* ================= FOOTER ================= */}
-                        <div className="p-5 border-t border-slate-700 flex gap-3">
+                        {/* FOOTER */}
+                        <div className="px-6 py-5 bg-slate-950/40 border-t border-slate-800/80 flex gap-3">
 
                             <button
                                 onClick={() => setOpen(false)}
-                                className="flex-1 py-3 rounded-xl bg-slate-700 hover:bg-slate-600 transition"
+                                className="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-800 text-slate-300 font-medium transition-all duration-200 active:scale-95"
                             >
                                 Hủy
                             </button>
 
                             <button
                                 onClick={handleSave}
-                                className="flex-1 py-3 rounded-xl bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition"
+                                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg shadow-cyan-500/20"
                             >
                                 Lưu danh mục
                             </button>
