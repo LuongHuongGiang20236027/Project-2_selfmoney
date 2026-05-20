@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+
 
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -24,51 +24,53 @@ export default function Home() {
       {/* Sticky Header */}
       <header className="sticky top-0 w-full z-50 bg-[#0B0F19]/75 backdrop-blur-md border-b border-slate-800/80 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+          <div className="flex items-center gap-3 group/logo cursor-pointer select-none">
+            <div className="relative">
+              {/* Glow effect */}
+              <div className="absolute inset-0 bg-cyan-400 blur-md opacity-30 group-hover/logo:opacity-50 group-hover/logo:blur-lg animate-pulse transition-all duration-300" />
+
+              {/* Logo */}
+              <div className="relative w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-cyan-400 flex items-center justify-center text-slate-950 font-black shadow-[0_0_15px_rgba(34,211,238,0.5)] italic text-lg select-none group-hover/logo:scale-105 transition-transform duration-300">
+                S
+              </div>
             </div>
+
+            {/* Brand Name */}
             <div>
-              <span className="text-xl font-black text-white tracking-wider uppercase italic bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">Self Money</span>
-              <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest -mt-1">Financial Intelligence</p>
+              <h1 className="text-xl font-black bg-gradient-to-r from-cyan-400 via-cyan-200 to-white bg-clip-text text-transparent italic tracking-wide whitespace-nowrap">
+                Self Money
+              </h1>
+
+              <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-0.5 group-hover/logo:text-cyan-400/80 transition-colors whitespace-nowrap">
+                PHÂN TÍCH TÀI CHÍNH
+              </p>
             </div>
           </div>
 
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
             <a href="#features" className="hover:text-cyan-400 transition-colors duration-200">Tính năng</a>
-            <a href="#mockup" className="hover:text-cyan-400 transition-colors duration-200">Giao diện mẫu</a>
+            <a href="#mockup" className="hover:text-cyan-400 transition-colors duration-200">Khám phá giao diện</a>
             <a href="#security" className="hover:text-cyan-400 transition-colors duration-200">Bảo mật</a>
-            <a href="#faq" className="hover:text-cyan-400 transition-colors duration-200">Hỏi đáp</a>
+
           </nav>
 
           <div className="flex items-center gap-4">
-            {isLoggedIn ? (
+            <>
               <Link
-                href="/dashboard"
+                href="/login"
+                className="text-slate-300 hover:text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-slate-800/40 transition-colors"
+              >
+                Đăng nhập
+              </Link>
+
+              <Link
+                href="/register"
                 className="relative group overflow-hidden px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 font-semibold text-white text-sm shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-300"
               >
-                <span className="relative z-10">Vào Dashboard</span>
+                <span className="relative z-10">Bắt đầu ngay</span>
                 <span className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </Link>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="text-slate-300 hover:text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-slate-800/40 transition-colors"
-                >
-                  Đăng nhập
-                </Link>
-                <Link
-                  href="/register"
-                  className="relative group overflow-hidden px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 font-semibold text-white text-sm shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-300"
-                >
-                  <span className="relative z-10">Bắt đầu ngay</span>
-                  <span className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </Link>
-              </>
-            )}
+            </>
           </div>
         </div>
       </header>
@@ -98,10 +100,10 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto">
             {isLoggedIn ? (
               <Link
-                href="/dashboard"
+                href="/register"
                 className="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 font-bold text-white text-center shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
               >
-                Đi tới Bảng điều khiển
+                Bắt đầu ngay
               </Link>
             ) : (
               <Link
@@ -115,7 +117,7 @@ export default function Home() {
               href="#mockup"
               className="px-8 py-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white font-bold text-center hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
             >
-              Xem Demo Giao Diện
+              Khám phá giao diện
             </a>
           </div>
 
@@ -225,9 +227,9 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
               </svg>
             </div>
-            <h3 className="text-xl font-bold text-white mb-3">Ví Đa Năng</h3>
+            <h3 className="text-xl font-bold text-white mb-3">Tài khoản Đa Năng</h3>
             <p className="text-slate-400 text-sm leading-relaxed">
-              Tạo nhiều tài khoản ví khác nhau (tiền mặt, thẻ ngân hàng, tiết kiệm) để dễ dàng kiểm soát chính xác nguồn tiền từ nhiều nơi.
+              Tạo nhiều tài khoản khác nhau (tiền mặt, thẻ ngân hàng, tiết kiệm) để dễ dàng kiểm soát chính xác nguồn tiền từ nhiều nơi.
             </p>
           </div>
 
@@ -387,10 +389,10 @@ export default function Home() {
             <div className="space-y-6">
               {/* Wallets Card */}
               <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
-                <h4 className="text-base font-bold text-white mb-4">Danh Sách Ví</h4>
+                <h4 className="text-base font-bold text-white mb-4">Danh Sách Tài khoản</h4>
                 <div className="space-y-3">
                   {[
-                    { name: "💵 Ví Tiền Mặt", type: "Tiền mặt", bal: "5,400,000", color: "text-yellow-400 bg-yellow-400/10" },
+                    { name: "💵 Tiền Mặt", type: "Tiền mặt", bal: "5,400,000", color: "text-yellow-400 bg-yellow-400/10" },
                     { name: "💳 Vietcombank", type: "Ngân hàng", bal: "18,250,000", color: "text-blue-400 bg-blue-400/10" },
                     { name: "🐷 Tiết Kiệm Kì Hạn", type: "Sổ tích lũy", bal: "22,800,000", color: "text-pink-400 bg-pink-400/10" },
                   ].map((w, idx) => (
@@ -500,122 +502,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section id="faq" className="relative max-w-7xl mx-auto px-6 py-20 border-t border-slate-800/60 z-10 scroll-mt-20">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-extrabold tracking-widest text-cyan-400 uppercase">GIẢI ĐÁP THẮC MẮC</span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-3 mb-6">
-            Câu hỏi thường gặp
-          </h2>
-          <p className="text-slate-400">Những câu hỏi được người dùng quan tâm nhiều nhất khi bắt đầu sử dụng SelfMoney.</p>
-        </div>
-
-        <div className="max-w-4xl mx-auto space-y-6">
-          {[
-            { q: "SelfMoney có thu phí sử dụng không?", a: "SelfMoney hiện tại được cung cấp hoàn toàn miễn phí cho tất cả các nhu cầu quản lý tài chính cá nhân cốt lõi bao gồm tạo ví, theo dõi giao dịch và lập báo cáo cơ bản." },
-            { q: "Thông tin tài chính của tôi có được bảo mật không?", a: "Có, tuyệt đối an toàn. Dữ liệu của bạn được lưu trữ trên hệ thống cơ sở dữ liệu riêng tư có mã hóa nghiêm ngặt. Chúng tôi không bao giờ chia sẻ thông tin tài chính của người dùng với bất kỳ bên thứ ba nào." },
-            { q: "Tôi có thể sử dụng SelfMoney trên điện thoại không?", a: "SelfMoney được phát triển với thiết kế Responsive tương thích 100% với màn hình các thiết bị di động, tablet hay máy tính để bàn giúp bạn dễ dàng sử dụng mọi lúc mọi nơi trên trình duyệt." },
-          ].map((item, idx) => (
-            <div key={idx} className="p-6 rounded-2xl border border-slate-800/80 bg-slate-900/20 hover:border-slate-700/80 transition-colors duration-200">
-              <h4 className="text-base sm:text-lg font-bold text-white flex gap-3">
-                <span className="text-cyan-400 font-mono">Q.</span>
-                {item.q}
-              </h4>
-              <p className="text-slate-400 text-sm mt-3 pl-6 leading-relaxed border-l border-slate-800">
-                {item.a}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Call To Action Banner */}
-      <section className="relative max-w-7xl mx-auto px-6 py-16 z-10">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-cyan-900/50 to-indigo-950/60 border border-cyan-500/20 p-8 md:p-16 text-center max-w-5xl mx-auto shadow-2xl">
-          <div className="absolute inset-0 bg-[#0B0F19]/40 backdrop-blur-sm -z-10" />
-          <div className="absolute -top-24 -left-24 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-6">
-            Bắt đầu quản lý tài chính thông minh ngay hôm nay
-          </h2>
-          <p className="text-slate-300 text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-            Tham gia cùng hàng ngàn người dùng thông thái đã thay đổi hoàn toàn thói quen chi tiêu và đạt được tự do tài chính bền vững nhờ SelfMoney.
-          </p>
-
-          <div className="flex flex-col sm:flex-row justify-center gap-4 max-w-sm sm:max-w-none mx-auto sm:w-auto">
-            {isLoggedIn ? (
-              <Link
-                href="/dashboard"
-                className="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 font-bold text-white shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
-              >
-                Đi tới Dashboard quản lý
-              </Link>
-            ) : (
-              <Link
-                href="/register"
-                className="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 font-bold text-white shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
-              >
-                Bắt đầu hoàn toàn miễn phí
-              </Link>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="relative max-w-7xl mx-auto px-6 pt-16 pb-8 border-t border-slate-900 z-10 text-xs sm:text-sm">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <span className="text-lg font-black text-white italic bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent uppercase tracking-wider">Self Money</span>
-            </div>
-            <p className="text-slate-400 text-xs leading-relaxed">
-              Giải pháp tối ưu hóa thu nhập, hoạch định chi tiêu thông minh nâng tầm cuộc sống của bạn.
-            </p>
-          </div>
-
-          <div>
-            <h4 className="text-xs font-bold uppercase text-white tracking-widest mb-4">SẢN PHẨM</h4>
-            <ul className="space-y-2.5 text-xs text-slate-400">
-              <li><a href="#features" className="hover:text-white transition">Tính năng nổi bật</a></li>
-              <li><a href="#mockup" className="hover:text-white transition">Bản vẽ thiết kế mẫu</a></li>
-              <li><a href="#security" className="hover:text-white transition">Chế độ bảo mật</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-xs font-bold uppercase text-white tracking-widest mb-4">CÔNG TY</h4>
-            <ul className="space-y-2.5 text-xs text-slate-400">
-              <li><a href="#" className="hover:text-white transition">Về chúng tôi</a></li>
-              <li><a href="#" className="hover:text-white transition">Tuyển dụng</a></li>
-              <li><a href="#" className="hover:text-white transition">Chính sách bảo mật</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-xs font-bold uppercase text-white tracking-widest mb-4">LIÊN HỆ</h4>
-            <ul className="space-y-2.5 text-xs text-slate-400">
-              <li>Email: contact@selfmoney.vn</li>
-              <li>Hotline: 1900 8888</li>
-              <li>Địa chỉ: Quận 1, TP. Hồ Chí Minh</li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} SelfMoney. All rights reserved.</p>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-slate-400 transition">Điều khoản sử dụng</a>
-            <a href="#" className="hover:text-slate-400 transition">Chính sách bảo mật</a>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
