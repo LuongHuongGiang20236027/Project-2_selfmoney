@@ -1,11 +1,12 @@
-"use client";
+// "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-type Theme = "light" | "dark";
+type Theme = "dark"; // Only dark theme supported
 
 type ThemeContextType = {
   theme: Theme;
+  // setTheme and toggleTheme are no-ops to keep dark mode permanently
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
 };
@@ -13,35 +14,21 @@ type ThemeContextType = {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("dark");
+  const [theme] = useState<Theme>("dark"); // Fixed to dark
 
+  // Ensure dark mode class is present on body
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as Theme;
-    if (savedTheme) {
-      setThemeState(savedTheme);
-      applyTheme(savedTheme);
-    } else {
-      applyTheme("dark");
-    }
+    document.body.classList.add("dark");
   }, []);
 
-  const applyTheme = (t: Theme) => {
-    if (t === "light") {
-      document.body.classList.add("light");
-    } else {
-      document.body.classList.remove("light");
-    }
-  };
-
   const setTheme = (t: Theme) => {
-    setThemeState(t);
-    localStorage.setItem("theme", t);
-    applyTheme(t);
+    // No operation, keep dark theme
+    console.warn("Theme changes are disabled; dark mode is enforced.");
   };
 
   const toggleTheme = () => {
-    const nextTheme = theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
+    // No operation, keep dark theme
+    console.warn("Theme toggle is disabled; dark mode is enforced.");
   };
 
   return (
