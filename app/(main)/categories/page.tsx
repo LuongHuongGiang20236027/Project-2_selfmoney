@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import { useLanguage } from "@/lib/LanguageContext";
 
 type Category = {
     id: number;
@@ -24,6 +25,7 @@ type FormState = {
 export default function CategoryPage() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
     const [tab, setTab] = useState<"expense" | "income">("expense");
     const [search, setSearch] = useState("");
@@ -176,7 +178,7 @@ export default function CategoryPage() {
         v.toLocaleString("vi-VN") + "đ";
 
     return (
-        <div className="bg-[#05070f] min-h-screen text-white relative overflow-hidden">
+        <div className="bg-background min-h-screen text-foreground relative overflow-hidden transition-colors duration-300">
             {/* Ambient visual background glowing spots */}
             <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
             <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-violet-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />

@@ -427,7 +427,7 @@ export default function BudgetsPage() {
     };
 
     return (
-        <div className="bg-[#05070f] min-h-screen text-white relative overflow-hidden">
+        <div className="bg-background min-h-screen text-foreground relative overflow-hidden transition-colors duration-300">
             {/* Ambient visual background glowing spots */}
             <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
             <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-violet-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />

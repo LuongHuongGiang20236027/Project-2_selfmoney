@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import { useLanguage } from "@/lib/LanguageContext";
 
 type Transaction = {
     id: number;
@@ -62,6 +63,7 @@ export default function TransactionPage() {
         typeof window !== "undefined"
             ? localStorage.getItem("token")
             : null;
+    const { t } = useLanguage();
 
     useEffect(() => {
         fetchAll();
@@ -198,7 +200,7 @@ export default function TransactionPage() {
     // DELETE
     // =========================
     const handleDelete = async (id: number) => {
-        const ok = confirm("Bạn có chắc muốn xóa giao dịch?");
+        const ok = confirm(t('transactions.confirm_delete'));
         if (!ok) return;
 
         try {
@@ -283,7 +285,7 @@ export default function TransactionPage() {
     const isEdit = editingId !== null;
 
     return (
-        <div className="bg-[#05070f] min-h-screen text-white relative overflow-hidden">
+        <div className="bg-background min-h-screen text-foreground relative overflow-hidden transition-colors duration-300">
             {/* Ambient visual background glowing spots */}
             <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
             <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-violet-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
@@ -318,7 +320,7 @@ export default function TransactionPage() {
                         }}
                         className="bg-cyan-500 text-black px-5 py-2.5 rounded-2xl font-bold hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all duration-200"
                     >
-                        + Giao dịch mới
+                        + {t('transactions.new_transaction')}
                     </button>
                 </div>
 
@@ -420,7 +422,7 @@ export default function TransactionPage() {
                         {/* SEARCH */}
                         <input
                             type="text"
-                            placeholder="Tìm ghi chú / danh mục..."
+                            placeholder={t('transactions.search_placeholder')}
                             value={filters.search}
                             onChange={(e) =>
                                 setFilters({ ...filters, search: e.target.value })
@@ -436,7 +438,7 @@ export default function TransactionPage() {
                             }
                             className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 outline-none transition text-slate-200"
                         >
-                            <option value="">Tất cả danh mục</option>
+                            <option value="">{t('transactions.all_categories')}</option>
                             {categories.map((c) => (
                                 <option key={c.id} value={c.name}>
                                     {c.icon} {c.name}
@@ -452,7 +454,7 @@ export default function TransactionPage() {
                             }
                             className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 outline-none transition text-slate-200"
                         >
-                            <option value="">Tất cả tài khoản</option>
+                            <option value="">{t('transactions.all_accounts')}</option>
                             {wallets.map((w) => (
                                 <option key={w.id} value={w.name}>
                                     {w.name}
@@ -486,7 +488,7 @@ export default function TransactionPage() {
                 {loading ? (
                     <p className="text-slate-400">Loading...</p>
                 ) : filteredTransactions.length === 0 ? (
-                    <p className="text-slate-500">Chưa có giao dịch</p>
+                    <p className="text-slate-500">{t('transactions.no_transactions')}</p>
                 ) : (
                     <div className="space-y-3">
                         {filteredTransactions.map((t) => (
@@ -604,10 +606,10 @@ export default function TransactionPage() {
                         <div className="px-6 py-5 border-b border-slate-800/80 flex justify-between items-center bg-slate-900/20">
                             <div>
                                 <h2 className="text-xl font-extrabold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                                    {isEdit ? "Chỉnh sửa giao dịch" : "Thêm giao dịch"}
+                                    {isEdit ? t('transactions.edit_title') : t('transactions.add_title')}
                                 </h2>
                                 <p className="text-xs text-slate-400 mt-1">
-                                    Nhập thông tin giao dịch của bạn
+                                    {t('transactions.modal_subtitle')}
                                 </p>
                             </div>
 
@@ -650,9 +652,7 @@ export default function TransactionPage() {
 
                                 {/* CATEGORY */}
                                 <div>
-                                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
-                                        Danh mục
-                                    </label>
+                                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">{t('transactions.category_label')}</label>
 
                                     <select
                                         value={form.category_id}
@@ -674,9 +674,7 @@ export default function TransactionPage() {
 
                                 {/* WALLET */}
                                 <div>
-                                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
-                                        Tài khoản
-                                    </label>
+                                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">{t('transactions.account_label')}</label>
 
                                     <select
                                         value={form.wallet_id}
@@ -722,14 +720,14 @@ export default function TransactionPage() {
                                 onClick={() => setOpenModal(false)}
                                 className="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-800 text-slate-300 font-medium transition-all duration-200 active:scale-95"
                             >
-                                Hủy
+                                {t('transactions.cancel')}
                             </button>
 
                             <button
                                 onClick={handleSave}
                                 className="flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg shadow-cyan-500/20"
                             >
-                                {isEdit ? "Cập nhật" : "Lưu giao dịch"}
+                                {isEdit ? t('transactions.update') : t('transactions.save')}
                             </button>
 
                         </div>

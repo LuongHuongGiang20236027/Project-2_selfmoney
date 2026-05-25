@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import Link from "next/link";
+import { useLanguage } from "@/lib/LanguageContext";
 
 type Transaction = {
     id: number;
@@ -36,6 +37,7 @@ type CategorySummary = {
 };
 
 export default function DashboardPage() {
+    const { t } = useLanguage();
     const [loading, setLoading] = useState(true);
 
     const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -211,7 +213,7 @@ export default function DashboardPage() {
     }, [transactions, selectedYear]);
 
     return (
-        <div className="bg-[#05070f] min-h-screen text-white relative overflow-hidden">
+        <div className="bg-background min-h-screen text-foreground relative overflow-hidden transition-colors duration-300">
             {/* Ambient visual background glowing spots */}
             <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
             <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-violet-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
@@ -227,15 +229,15 @@ export default function DashboardPage() {
                     <div>
                         <div className="flex items-center gap-2.5">
                             <h1 className="text-3xl font-black bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent tracking-tight">
-                                Dashboard
+                                {t("dashboard.title")}
                             </h1>
                             <span className="bg-cyan-500/10 text-cyan-400 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full border border-cyan-500/20 tracking-wider shadow-[0_0_10px_rgba(6,182,212,0.1)]">
-                                Live Overview
+                                {t("dashboard.live_overview")}
                             </span>
                         </div>
 
                         <p className="text-xs text-slate-500 mt-1.5 font-medium tracking-wide">
-                            Tổng quan tài chính cá nhân thông minh và trực quan của bạn
+                            {t("dashboard.subtitle")}
                         </p>
                     </div>
                 </div>
@@ -255,13 +257,13 @@ export default function DashboardPage() {
                             </div>
 
                             <span className="text-xs text-green-400 bg-green-400/10 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
-                                Thu nhập
+                                {t("dashboard.income")}
                             </span>
 
                         </div>
 
                         <p className="text-slate-400 text-sm mb-1">
-                            Tổng thu nhập
+                            {t("dashboard.total_income")}
                         </p>
 
                         <h2 className="text-3xl font-sans tabular-nums text-green-400 drop-shadow-[0_0_10px_rgba(74,222,128,0.1)] flex items-baseline gap-0.5 tracking-wide">
@@ -286,13 +288,13 @@ export default function DashboardPage() {
                             </div>
 
                             <span className="text-xs text-red-400 bg-red-400/10 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
-                                Chi tiêu
+                                {t("dashboard.expense")}
                             </span>
 
                         </div>
 
                         <p className="text-slate-400 text-sm mb-1">
-                            Tổng chi tiêu
+                            {t("dashboard.total_expense")}
                         </p>
 
                         <h2 className="text-3xl font-sans tabular-nums text-rose-400 drop-shadow-[0_0_10px_rgba(248,113,113,0.1)] flex items-baseline gap-0.5 tracking-wide">
@@ -317,13 +319,13 @@ export default function DashboardPage() {
                             </div>
 
                             <span className="text-xs text-cyan-400 bg-cyan-400/10 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
-                                Số dư
+                                {t("dashboard.balance")}
                             </span>
 
                         </div>
 
                         <p className="text-slate-400 text-sm mb-1">
-                            Số dư hiện tại
+                            {t("dashboard.current_balance")}
                         </p>
 
                         <h2
@@ -355,9 +357,9 @@ export default function DashboardPage() {
                         <div className="flex items-center justify-between mb-6">
                             <div>
                                 <h3 className="text-xl font-bold bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent mb-1">
-                                    Biểu đồ thu chi
+                                    {t("dashboard.chart_title")}
                                 </h3>
-                                <p className="text-slate-500 text-sm">Năm {selectedYear}</p>
+                                <p className="text-slate-500 text-sm">{t("budgets.year_label")} {selectedYear}</p>
                             </div>
 
                             <div className="flex items-center gap-4">
@@ -365,11 +367,11 @@ export default function DashboardPage() {
                                 <div className="flex items-center gap-3">
                                     <span className="flex items-center gap-1.5 text-xs text-slate-400">
                                         <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.6)]" />
-                                        Thu nhập
+                                        {t("dashboard.income")}
                                     </span>
                                     <span className="flex items-center gap-1.5 text-xs text-slate-400">
                                         <span className="w-2.5 h-2.5 rounded-full bg-rose-400 shadow-[0_0_6px_rgba(251,113,133,0.6)]" />
-                                        Chi tiêu
+                                        {t("dashboard.expense")}
                                     </span>
                                 </div>
                                 <input
@@ -447,10 +449,10 @@ export default function DashboardPage() {
 
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-xl font-bold bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
-                                Danh mục của tôi
+                                {t("dashboard.my_categories")}
                             </h3>
                             <Link href="/categories" className="text-xs text-cyan-400 hover:text-cyan-300 font-semibold uppercase tracking-wider transition-colors">
-                                Xem tất cả
+                                {t("dashboard.view_all")}
                             </Link>
                         </div>
 
@@ -515,15 +517,15 @@ export default function DashboardPage() {
                         <div className="px-6 py-5 border-b border-slate-800/60 flex items-center justify-between bg-slate-950/20">
                             <div>
                                 <h3 className="text-xl font-bold bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
-                                    Giao dịch gần đây
+                                    {t("dashboard.recent_transactions")}
                                 </h3>
-                                <p className="text-xs text-slate-500 mt-0.5">Cập nhật mới nhất</p>
+                                <p className="text-xs text-slate-500 mt-0.5">{t("dashboard.latest_updates")}</p>
                             </div>
                             <Link
                                 href="/transactions"
                                 className="text-xs text-cyan-400 hover:text-cyan-300 font-semibold uppercase tracking-wider transition-colors"
                             >
-                                Xem tất cả
+                                {t("dashboard.view_all")}
                             </Link>
                         </div>
 
@@ -531,7 +533,7 @@ export default function DashboardPage() {
                             {loading ? (
                                 <div className="p-8 text-center">
                                     <div className="w-8 h-8 rounded-full border-2 border-cyan-400/30 border-t-cyan-400 animate-spin mx-auto mb-3" />
-                                    <p className="text-slate-500 text-sm">Đang tải...</p>
+                                    <p className="text-slate-500 text-sm">{t("dashboard.loading")}</p>
                                 </div>
                             ) : (
                                 recentTransactions.map((t) => (
@@ -614,15 +616,15 @@ export default function DashboardPage() {
                         <div className="flex items-center justify-between mb-6">
                             <div>
                                 <h3 className="text-xl font-bold bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
-                                    Tài khoản của tôi
+                                    {t("dashboard.my_accounts")}
                                 </h3>
-                                <p className="text-xs text-slate-500 mt-0.5">{wallets.length} tài khoản đang hoạt động</p>
+                                <p className="text-xs text-slate-500 mt-0.5">{wallets.length} {t("dashboard.active_accounts")}</p>
                             </div>
                             <Link
                                 href="/wallets"
                                 className="text-xs text-cyan-400 hover:text-cyan-300 font-semibold uppercase tracking-wider transition-colors"
                             >
-                                Xem tất cả
+                                {t("dashboard.view_all")}
                             </Link>
                         </div>
 

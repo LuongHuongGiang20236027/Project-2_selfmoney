@@ -12,6 +12,18 @@ export default function Home() {
     if (token) {
       setIsLoggedIn(true);
     }
+
+    // Force dark theme on landing page
+    const body = document.body;
+    const hadLight = body.classList.contains("light");
+    if (hadLight) {
+      body.classList.remove("light");
+    }
+    return () => {
+      if (hadLight) {
+        body.classList.add("light");
+      }
+    };
   }, []);
 
   return (
