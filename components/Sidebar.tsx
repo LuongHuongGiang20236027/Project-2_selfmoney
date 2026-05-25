@@ -3,10 +3,12 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useSyncExternalStore, useEffect } from "react";
 import { SidebarStore } from "./SidebarStore";
+import { useLanguage } from "@/lib/LanguageContext";
 
 export default function Sidebar() {
   const router = useRouter();
   const pathname = usePathname();
+  const { t } = useLanguage();
   const isCollapsed = useSyncExternalStore(
     SidebarStore.subscribe,
     SidebarStore.getSnapshot,
@@ -22,13 +24,13 @@ export default function Sidebar() {
   }, [isCollapsed]);
 
   const menu = [
-    { href: "/dashboard", label: "Tổng quan" },
-    { href: "/transactions", label: "Giao dịch" },
-    { href: "/wallets", label: "Tài khoản" },
-    { href: "/budgets", label: "Ngân sách" },
-    { href: "/categories", label: "Danh mục" },
-    { href: "/analytics", label: "Thống kê" },
-    { href: "/profile", label: "Hồ sơ cá nhân" },
+    { href: "/dashboard", label: t("sidebar.dashboard") },
+    { href: "/transactions", label: t("sidebar.transactions") },
+    { href: "/wallets", label: t("sidebar.wallets") },
+    { href: "/budgets", label: t("sidebar.budgets") },
+    { href: "/categories", label: t("sidebar.categories") },
+    { href: "/analytics", label: t("sidebar.analytics") },
+    { href: "/profile", label: t("sidebar.profile") },
   ];
 
   const handleLogout = () => {
@@ -110,7 +112,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className={`fixed left-0 top-0 h-full border-r border-slate-900/60 bg-slate-950/40 backdrop-blur-3xl flex flex-col py-8 z-50 shadow-[10px_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 ${isCollapsed ? "w-[5.5rem]" : "w-64"}`}>
+    <aside className={`fixed left-0 top-0 h-full border-r border-card-border bg-sidebar-bg backdrop-blur-3xl flex flex-col py-8 z-50 shadow-[10px_0_30px_rgba(0,0,0,0.3)] transition-all duration-300 ${isCollapsed ? "w-[5.5rem]" : "w-64"}`}>
       {/* Logo */}
       <div
         onClick={() => { SidebarStore.toggle(); router.push("/dashboard"); }}
@@ -129,7 +131,7 @@ export default function Sidebar() {
             Self Money
           </h1>
           <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-0.5 group-hover/logo:text-cyan-400/80 transition-colors whitespace-nowrap">
-            PHÂN TÍCH TÀI CHÍNH
+            {t("sidebar.logo_sub")}
           </p>
         </div>
       </div>
@@ -144,7 +146,7 @@ export default function Sidebar() {
               onClick={() => router.push(item.href)}
               className={`group relative flex items-center cursor-pointer ${isCollapsed ? "justify-center py-3 rounded-2xl" : "gap-3.5 py-3 px-4 rounded-2xl"} transition-all duration-300 ${isActive
                 ? "text-cyan-400 bg-gradient-to-r from-cyan-500/12 to-cyan-500/3 border border-cyan-500/20 shadow-[0_4px_20px_rgba(6,182,212,0.06)]"
-                : "text-slate-400 hover:text-white hover:bg-slate-900/50 hover:border-slate-800/40 border-transparent"
+                : "text-slate-400 dark:text-slate-500 hover:text-white dark:hover:text-slate-200 hover:bg-card-bg/60 hover:border-card-border/80 border border-transparent"
                 }`}
             >
               {/* Glowing Active Border Line Indicator */}
@@ -172,7 +174,7 @@ export default function Sidebar() {
       </nav>
 
       {/* Logout Footer Section */}
-      <div className={`pt-6 border-t border-slate-900/60 ${isCollapsed ? "px-2" : "px-4"}`}>
+      <div className={`pt-6 border-t border-card-border ${isCollapsed ? "px-2" : "px-4"}`}>
         <button
           type="button"
           onClick={handleLogout}
@@ -182,7 +184,7 @@ export default function Sidebar() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 01-3-3h4a3 3 0 013 3v1" />
           </svg>
           <div className={`overflow-hidden transition-all duration-300 ${isCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"}`}>
-            <span className="whitespace-nowrap ml-3 block">Đăng xuất</span>
+            <span className="whitespace-nowrap ml-3 block">{t("sidebar.logout")}</span>
           </div>
         </button>
       </div>

@@ -495,18 +495,17 @@ export default function TransactionPage() {
                                 className="relative group overflow-hidden bg-gradient-to-r from-slate-950/40 via-slate-900/40 to-slate-950/40 backdrop-blur-xl border border-slate-800/80 hover:border-slate-700/80 rounded-2xl p-4 flex items-center transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)] hover:-translate-y-0.5"
                             >
                                 {/* Left colored glowing strip */}
-                                <div 
-                                    className={`absolute left-0 top-1/2 -translate-y-1/2 w-1 h-12 rounded-r-full opacity-60 group-hover:opacity-100 transition-all duration-300 ${
-                                        t.category_type === "income" 
-                                            ? "bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.8)]" 
-                                            : "bg-rose-500 shadow-[0_0_12px_rgba(244,63,94,0.8)]"
-                                    }`}
+                                <div
+                                    className={`absolute left-0 top-1/2 -translate-y-1/2 w-1 h-12 rounded-r-full opacity-60 group-hover:opacity-100 transition-all duration-300 ${t.category_type === "income"
+                                        ? "bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.8)]"
+                                        : "bg-rose-500 shadow-[0_0_12px_rgba(244,63,94,0.8)]"
+                                        }`}
                                 />
 
                                 {/* Icon with radial glow */}
                                 <div className="relative mr-4 pl-1 select-none">
                                     {/* Category color glow backdrop */}
-                                    <div 
+                                    <div
                                         className="absolute inset-0 rounded-2xl blur-md opacity-20 group-hover:opacity-40 transition-all duration-300"
                                         style={{ backgroundColor: t.category_color }}
                                     />
@@ -541,11 +540,10 @@ export default function TransactionPage() {
                                 {/* Value & Actions */}
                                 <div className="text-right flex flex-col justify-between h-full min-h-[4.5rem]">
                                     {/* Amount and localized currency symbol */}
-                                    <div className={`font-sans tabular-nums flex items-baseline gap-0.5 justify-end text-lg transition-all duration-300 ${
-                                        t.category_type === "income"
-                                            ? "text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.15)] group-hover:text-emerald-300"
-                                            : "text-rose-400 drop-shadow-[0_0_10px_rgba(251,113,133,0.15)] group-hover:text-rose-300"
-                                    }`}>
+                                    <div className={`font-sans tabular-nums flex items-baseline gap-0.5 justify-end text-lg transition-all duration-300 ${t.category_type === "income"
+                                        ? "text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.15)] group-hover:text-emerald-300"
+                                        : "text-rose-400 drop-shadow-[0_0_10px_rgba(251,113,133,0.15)] group-hover:text-rose-300"
+                                        }`}>
                                         <span className="text-sm font-semibold opacity-85 mr-0.5">{t.category_type === "income" ? "+" : "-"}</span>
                                         <span className="text-lg font-black tracking-tight">{Number(t.amount).toLocaleString("vi-VN")}</span>
                                         <span className="text-sm font-semibold opacity-75 ml-0.5">đ</span>
@@ -568,7 +566,7 @@ export default function TransactionPage() {
 
                                     {/* Slide-in and fade-in Actions */}
                                     <div className="flex gap-2 justify-end mt-2 opacity-0 translate-x-3 scale-95 group-hover:opacity-100 group-hover:translate-x-0 group-hover:scale-100 transition-all duration-300 origin-right">
-                                        <button 
+                                        <button
                                             onClick={() => handleEdit(t)}
                                             className="text-slate-400 hover:text-cyan-400 hover:scale-105 active:scale-95 transition-all p-1.5 rounded-lg bg-slate-950/40 border border-slate-800 hover:border-cyan-500/30 hover:bg-slate-900 shadow-lg"
                                             title="Sửa giao dịch"
@@ -577,7 +575,7 @@ export default function TransactionPage() {
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                             </svg>
                                         </button>
-                                        <button 
+                                        <button
                                             onClick={() => handleDelete(t.id)}
                                             className="text-slate-400 hover:text-rose-400 hover:scale-105 active:scale-95 transition-all p-1.5 rounded-lg bg-slate-950/40 border border-slate-800 hover:border-rose-500/30 hover:bg-slate-900 shadow-lg"
                                             title="Xóa giao dịch"

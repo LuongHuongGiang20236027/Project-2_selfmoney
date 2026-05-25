@@ -4,6 +4,7 @@ import { useEffect, useState, useRef, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SidebarStore } from "./SidebarStore";
+import { useLanguage } from "@/lib/LanguageContext";
 
 type Profile = {
     name: string;
@@ -11,7 +12,7 @@ type Profile = {
 };
 
 export default function Header() {
-
+    const { t } = useLanguage();
     const [profile, setProfile] =
         useState<Profile | null>(null);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -56,7 +57,7 @@ export default function Header() {
 
             if (!res.ok) {
                 console.log(
-                    "Không lấy được profile"
+                    t("profile.fetch_failed")
                 );
                 return;
             }
@@ -71,7 +72,7 @@ export default function Header() {
         } catch (error) {
 
             console.error(
-                "Lỗi lấy profile:",
+                "Error fetching profile:",
                 error
             );
         }
@@ -83,12 +84,12 @@ export default function Header() {
             new Date().getHours();
 
         if (hour < 12)
-            return "Chào buổi sáng";
+            return t("header.greeting_morning");
 
         if (hour < 18)
-            return "Chào buổi chiều";
+            return t("header.greeting_afternoon");
 
-        return "Chào buổi tối";
+        return t("header.greeting_evening");
     };
 
     const handleLogout = () => {
@@ -97,20 +98,20 @@ export default function Header() {
     };
 
     return (
-        <header className="fixed top-0 left-0 h-20 bg-slate-950/40 backdrop-blur-3xl border-b border-slate-900/60 flex items-center justify-between px-8 z-40 shadow-[0_4px_30px_rgba(0,0,0,0.3)]" style={{ left: isCollapsed ? '5.5rem' : '16rem', width: isCollapsed ? 'calc(100% - 5.5rem)' : 'calc(100% - 16rem)' }}>
+        <header className="fixed top-0 left-0 h-20 bg-sidebar-bg backdrop-blur-3xl border-b border-card-border flex items-center justify-between px-8 z-40 shadow-[0_4px_30px_rgba(0,0,0,0.3)]" style={{ left: isCollapsed ? '5.5rem' : '16rem', width: isCollapsed ? 'calc(100% - 5.5rem)' : 'calc(100% - 16rem)' }}>
 
             {/* LEFT: Financial Greeting */}
             <div className="flex-1">
                 <div className="flex items-center gap-2">
-                    <h2 className="text-base font-extrabold text-slate-100 flex items-center gap-1.5 tracking-wide">
+                    <h2 className="text-base font-extrabold text-foreground flex items-center gap-1.5 tracking-wide">
                         <span>{getGreeting()},</span>
-                        <span className="bg-gradient-to-r from-cyan-400 to-cyan-200 bg-clip-text text-transparent">{profile?.name || "Khách"}</span>
+                        <span className="bg-gradient-to-r from-cyan-400 to-cyan-200 bg-clip-text text-transparent">{profile?.name || t("header.guest")}</span>
                         <span className="animate-bounce inline-block">👋</span>
                     </h2>
                 </div>
 
                 <p className="text-[11px] text-slate-500 font-medium tracking-wide mt-0.5 uppercase">
-                    Hệ thống theo dõi chi tiêu cá nhân
+                    {t("header.title_sub")}
                 </p>
             </div>
 
@@ -118,28 +119,23 @@ export default function Header() {
             <div className="flex items-center gap-4 relative" ref={dropdownRef}>
                 <div
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                    className="relative group/avatar cursor-pointer flex items-center gap-3 bg-slate-900/20 hover:bg-slate-900/50 px-4 py-2 rounded-2xl border border-slate-900/60 hover:border-slate-800/80 shadow-inner transition-all duration-300"
+                    className="relative group/avatar cursor-pointer flex items-center gap-3 bg-card-bg/40 hover:bg-card-bg px-4 py-2 rounded-2xl border border-card-border hover:border-cyan-500/30 shadow-inner transition-all duration-300"
                 >
 
-                    <div className="relative select-none flex-shrink-0">
-                        {/* High-end gradient rotating hover glow outline */}
-                        <div className="absolute -inset-0.5 rounded-full bg-gradient-to-tr from-cyan-500 to-indigo-500 blur opacity-0 group-hover/avatar:opacity-100 transition-all duration-500" />
+                    {profile?.avatar && (
                         <img
-                            src={
-                                profile?.avatar ||
-                                "https://i.pravatar.cc/100"
-                            }
+                            src={profile.avatar}
                             alt="avatar"
-                            className="relative w-8.5 h-8.5 rounded-full object-cover border border-slate-800"
+                            className="relative w-8.5 h-8.5 rounded-full object-cover border border-card-border"
                         />
-                    </div>
+                    )}
 
                     <div className="text-left hidden sm:block">
-                        <p className="text-xs text-slate-200 font-extrabold tracking-wide group-hover:text-cyan-400 transition-colors">
-                            {profile?.name || "Khách"}
+                        <p className="text-xs text-foreground font-extrabold tracking-wide group-hover:text-cyan-400 transition-colors">
+                            {profile?.name || t("header.guest")}
                         </p>
                         <p className="text-[9px] text-slate-500 font-bold uppercase mt-0.5 tracking-wider">
-                            Thành viên
+                            {t("header.member")}
                         </p>
                     </div>
 
@@ -150,23 +146,23 @@ export default function Header() {
 
                 {/* DROPDOWN MENU */}
                 {isDropdownOpen && (
-                    <div className="absolute top-full right-0 mt-3 w-56 bg-slate-950/90 backdrop-blur-xl border border-slate-800/80 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] overflow-hidden animate-fade-in-up origin-top-right">
+                    <div className="absolute top-full right-0 mt-3 w-56 bg-card-bg/95 backdrop-blur-xl border border-card-border rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] overflow-hidden animate-fade-in-up origin-top-right">
                         <div className="py-2">
                             <Link
                                 href="/profile"
                                 onClick={() => setIsDropdownOpen(false)}
-                                className="flex items-center gap-3 px-4 py-3 text-sm text-slate-300 hover:bg-slate-900/80 hover:text-cyan-400 transition-colors group/item"
+                                className="flex items-center gap-3 px-4 py-3 text-sm text-foreground/80 hover:bg-card-bg/80 hover:text-cyan-400 transition-colors group/item"
                             >
                                 <svg className="w-5 h-5 text-indigo-300 group-hover/item:text-indigo-400 transition-colors drop-shadow-[0_0_8px_rgba(129,140,248,0.6)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
                                 <div>
-                                    <p className="font-semibold">Tài khoản</p>
-                                    <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-0.5">Hồ sơ cá nhân</p>
+                                    <p className="font-semibold">{t("header.profile")}</p>
+                                    <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-0.5">{t("header.profile_sub")}</p>
                                 </div>
                             </Link>
 
-                            <div className="h-[1px] w-full bg-slate-800/50 my-1" />
+                            <div className="h-[1px] w-full bg-card-border/50 my-1" />
 
                             <button
                                 onClick={handleLogout}
@@ -175,7 +171,7 @@ export default function Header() {
                                 <svg className="w-5 h-5 text-rose-400/80 group-hover/item:text-rose-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 01-3-3h4a3 3 0 013 3v1" />
                                 </svg>
-                                <span className="font-semibold">Đăng xuất</span>
+                                <span className="font-semibold">{t("header.logout")}</span>
                             </button>
                         </div>
                     </div>

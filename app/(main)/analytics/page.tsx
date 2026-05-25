@@ -294,19 +294,8 @@ export default function AnalyticsPage() {
             prevExpense
         );
 
-    // ===== BALANCE =====
-
     const totalBalance = useMemo(() => {
-
-        return wallets.reduce(
-            (sum, wallet) =>
-                sum +
-                Number(
-                    wallet.balance || 0
-                ),
-            0
-        );
-
+        return wallets.reduce((sum, w) => sum + Number(w.balance || 0), 0);
     }, [wallets]);
 
     // ===== BUDGET =====
@@ -913,7 +902,7 @@ export default function AnalyticsPage() {
                                             }}
                                         />
 
-                                        <Tooltip 
+                                        <Tooltip
                                             contentStyle={{
                                                 backgroundColor: 'rgba(15, 23, 42, 0.95)',
                                                 borderColor: 'rgba(51, 65, 85, 0.7)',
@@ -1019,7 +1008,7 @@ export default function AnalyticsPage() {
 
                                             </Pie>
 
-                                            <Tooltip 
+                                            <Tooltip
                                                 contentStyle={{
                                                     backgroundColor: 'rgba(15, 23, 42, 0.9)',
                                                     border: '1px solid rgba(51, 65, 85, 0.8)',
@@ -1069,7 +1058,7 @@ export default function AnalyticsPage() {
                                                 <div className="flex items-center gap-3.5">
 
                                                     <div className="relative">
-                                                        <div 
+                                                        <div
                                                             className="absolute inset-0 rounded-full blur-sm opacity-40 group-hover/legend:opacity-70 transition-opacity duration-300"
                                                             style={{ backgroundColor: item.color }}
                                                         />
@@ -1140,7 +1129,7 @@ export default function AnalyticsPage() {
 
                                             <div className="relative select-none">
                                                 {/* Color glow backdrop */}
-                                                <div 
+                                                <div
                                                     className="absolute inset-0 rounded-xl blur-md opacity-20 group-hover/row:opacity-40 transition-all duration-300 animate-pulse"
                                                     style={{ backgroundColor: item.color || "#fb7185" }}
                                                 />
@@ -1164,11 +1153,11 @@ export default function AnalyticsPage() {
 
                                         </div>
 
-                                         <span className="font-sans tabular-nums flex items-baseline gap-0.5 text-lg text-rose-400 drop-shadow-[0_0_10px_rgba(251,113,133,0.15)] group-hover/row:text-rose-300 transition-colors">
-                                             <span className="text-sm font-semibold opacity-85 mr-0.5">-</span>
-                                             <span className="text-lg font-black tracking-tight">{item.amount.toLocaleString("vi-VN")}</span>
-                                             <span className="text-sm font-semibold opacity-75 ml-0.5">đ</span>
-                                         </span>
+                                        <span className="font-sans tabular-nums flex items-baseline gap-0.5 text-lg text-rose-400 drop-shadow-[0_0_10px_rgba(251,113,133,0.15)] group-hover/row:text-rose-300 transition-colors">
+                                            <span className="text-sm font-semibold opacity-85 mr-0.5">-</span>
+                                            <span className="text-lg font-black tracking-tight">{item.amount.toLocaleString("vi-VN")}</span>
+                                            <span className="text-sm font-semibold opacity-75 ml-0.5">đ</span>
+                                        </span>
 
                                     </div>
                                 )
@@ -1228,11 +1217,10 @@ export default function AnalyticsPage() {
 
                                         <div>
 
-                                            <p className={`font-extrabold mb-1 transition-colors ${
-                                                w.type === "warning"
+                                            <p className={`font-extrabold mb-1 transition-colors ${w.type === "warning"
                                                     ? "text-red-300 group-hover/warnrow:text-red-200"
                                                     : "text-emerald-300 group-hover/warnrow:text-emerald-200"
-                                            }`}>
+                                                }`}>
                                                 {
                                                     w.title
                                                 }

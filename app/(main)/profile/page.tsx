@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
+import { useTheme } from "@/lib/ThemeContext";
+import { useLanguage } from "@/lib/LanguageContext";
 
 type Profile = {
     name: string;
@@ -15,6 +17,8 @@ type Profile = {
 };
 
 export default function ProfilePage() {
+    const { theme, setTheme } = useTheme();
+    const { language, setLanguage, t } = useLanguage();
 
     const fileInputRef =
         useRef<HTMLInputElement | null>(null);
@@ -74,9 +78,7 @@ export default function ProfilePage() {
                 });
 
             if (!res.ok) {
-                console.log(
-                    "Không lấy được profile"
-                );
+                alert(t("profile.fetch_failed"));
                 return;
             }
 
@@ -165,7 +167,7 @@ export default function ProfilePage() {
                 );
 
                 alert(
-                    "Upload avatar thất bại"
+                    t("profile.avatar_upload_failed")
                 );
             }
         };
@@ -209,7 +211,7 @@ export default function ProfilePage() {
                 }
 
                 alert(
-                    "Cập nhật thông tin thành công"
+                    t("profile.save_success")
                 );
 
                 fetchProfile();
@@ -219,7 +221,7 @@ export default function ProfilePage() {
                 console.error(error);
 
                 alert(
-                    "Lỗi cập nhật profile"
+                    t("profile.error_update")
                 );
             }
         };
@@ -234,7 +236,7 @@ export default function ProfilePage() {
                 confirmPassword
             ) {
                 alert(
-                    "Mật khẩu xác nhận không khớp"
+                    t("profile.psw_mismatch")
                 );
                 return;
             }
@@ -277,7 +279,7 @@ export default function ProfilePage() {
                 }
 
                 alert(
-                    "Đổi mật khẩu thành công"
+                    t("profile.psw_success")
                 );
 
                 setCurrentPassword("");
@@ -289,13 +291,13 @@ export default function ProfilePage() {
                 console.error(error);
 
                 alert(
-                    "Lỗi đổi mật khẩu"
+                    t("profile.error_change_psw")
                 );
             }
         };
 
     return (
-        <div className="bg-[#05070f] min-h-screen text-white relative overflow-hidden">
+        <div className="bg-background min-h-screen text-foreground relative overflow-hidden transition-colors duration-300">
             {/* Ambient visual background glowing spots */}
             <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
             <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-violet-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse-glow" />
@@ -306,12 +308,12 @@ export default function ProfilePage() {
             <main className="ml-64 pt-24 p-8 relative z-10">
 
                 {/* HEADER */}
-                <div className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-900/60 pb-6 relative">
+                <div className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-card-border pb-6 relative">
                     <div className="absolute bottom-0 left-0 w-32 h-[1px] bg-gradient-to-r from-cyan-500 to-transparent" />
                     <div>
                         <div className="flex items-center gap-2.5">
-                            <h1 className="text-3xl font-black bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent tracking-tight">
-                                Hồ sơ cá nhân
+                            <h1 className="text-3xl font-black bg-gradient-to-r from-text-primary via-slate-100 to-slate-400 bg-clip-text text-transparent tracking-tight">
+                                {t("profile.title")}
                             </h1>
                             <span className="bg-cyan-500/10 text-cyan-400 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full border border-cyan-500/20 tracking-wider shadow-[0_0_10px_rgba(6,182,212,0.1)]">
                                 Profile
@@ -319,27 +321,27 @@ export default function ProfilePage() {
                         </div>
 
                         <p className="text-xs text-slate-500 mt-1.5 font-medium tracking-wide">
-                            Quản lý thông tin tài khoản và bảo mật hệ thống
+                            {t("profile.subtitle")}
                         </p>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
 
                     {/* PROFILE */}
-                    <section className="bg-gradient-to-br from-slate-950/40 via-slate-900/40 to-slate-950/40 backdrop-blur-xl border border-slate-850 rounded-3xl p-8 shadow-[0_4px_25px_rgba(0,0,0,0.4)] relative overflow-hidden transition-all duration-300">
+                    <section className="bg-gradient-to-br from-card-bg/80 via-card-bg to-card-bg/80 backdrop-blur-xl border border-card-border rounded-3xl p-8 shadow-[0_4px_25px_rgba(0,0,0,0.4)] relative overflow-hidden transition-all duration-300">
                         <div className="flex items-center gap-4 mb-8">
                             <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-2xl border border-cyan-500/20">
                                 👤
                             </div>
 
                             <div>
-                                <h2 className="text-xl font-black bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
-                                    Thông tin cá nhân
+                                <h2 className="text-xl font-black bg-gradient-to-r from-text-primary to-slate-300 bg-clip-text text-transparent">
+                                    {t("profile.info_section")}
                                 </h2>
 
                                 <p className="text-xs text-slate-500 mt-0.5">
-                                    Cập nhật các thông tin cơ bản của bạn
+                                    {t("profile.info_section_desc")}
                                 </p>
                             </div>
                         </div>
@@ -359,7 +361,7 @@ export default function ProfilePage() {
                                             "https://i.pravatar.cc/150"
                                         }
                                         alt="avatar"
-                                        className="relative w-28 h-28 rounded-full object-cover border-4 border-slate-900/80 shadow-2xl"
+                                        className="relative w-28 h-28 rounded-full object-cover border-4 border-card-border shadow-2xl"
                                     />
 
                                     <button
@@ -367,7 +369,7 @@ export default function ProfilePage() {
                                         onClick={() =>
                                             fileInputRef.current?.click()
                                         }
-                                        className="absolute bottom-0 right-0 bg-cyan-500 hover:bg-cyan-400 text-black w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110 active:scale-95 duration-200"
+                                        className="absolute bottom-0 right-0 bg-cyan-500 hover:bg-cyan-400 text-slate-950 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-110 active:scale-95 duration-200"
                                     >
                                         📷
                                     </button>
@@ -387,7 +389,7 @@ export default function ProfilePage() {
                             {/* NAME */}
                             <div>
                                 <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
-                                    Họ và tên
+                                    {t("profile.name_label")}
                                 </label>
 
                                 <div className="relative">
@@ -403,7 +405,7 @@ export default function ProfilePage() {
                                                 e.target.value
                                             )
                                         }
-                                        className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl py-3 pl-12 pr-4 text-slate-200 transition-all duration-300 shadow-inner"
+                                        className="w-full bg-input-bg border border-input-border focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl py-3 pl-12 pr-4 text-foreground transition-all duration-300 shadow-inner"
                                     />
                                 </div>
                             </div>
@@ -411,11 +413,11 @@ export default function ProfilePage() {
                             {/* USERNAME */}
                             <div>
                                 <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
-                                    Tên đăng nhập
+                                    {t("profile.username_label")}
                                 </label>
 
                                 <div className="relative opacity-65">
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-650">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
                                         👤
                                     </span>
 
@@ -426,7 +428,7 @@ export default function ProfilePage() {
                                             profile?.username ||
                                             ""
                                         }
-                                        className="w-full bg-slate-950 border border-slate-900 rounded-xl py-3 pl-12 pr-4 text-slate-500 cursor-not-allowed"
+                                        className="w-full bg-input-bg border border-card-border rounded-xl py-3 pl-12 pr-4 text-slate-500 cursor-not-allowed"
                                     />
                                 </div>
                             </div>
@@ -434,11 +436,11 @@ export default function ProfilePage() {
                             {/* PHONE */}
                             <div>
                                 <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
-                                    Số điện thoại
+                                    {t("profile.phone_label")}
                                 </label>
 
                                 <div className="relative opacity-65">
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-655">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
                                         📞
                                     </span>
 
@@ -449,7 +451,7 @@ export default function ProfilePage() {
                                             profile?.phone ||
                                             ""
                                         }
-                                        className="w-full bg-slate-950 border border-slate-900 rounded-xl py-3 pl-12 pr-4 text-slate-500 cursor-not-allowed"
+                                        className="w-full bg-input-bg border border-card-border rounded-xl py-3 pl-12 pr-4 text-slate-500 cursor-not-allowed"
                                     />
                                 </div>
                             </div>
@@ -457,7 +459,7 @@ export default function ProfilePage() {
                             {/* BIRTHDAY */}
                             <div>
                                 <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
-                                    Ngày sinh
+                                    {t("profile.birthday_label")}
                                 </label>
 
                                 <div className="relative">
@@ -473,7 +475,7 @@ export default function ProfilePage() {
                                                 e.target.value
                                             )
                                         }
-                                        className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl py-3 pl-12 pr-4 text-slate-200 transition-all duration-300 shadow-inner"
+                                        className="w-full bg-input-bg border border-input-border focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl py-3 pl-12 pr-4 text-foreground transition-all duration-300 shadow-inner"
                                     />
                                 </div>
                             </div>
@@ -481,7 +483,7 @@ export default function ProfilePage() {
                             {/* GENDER */}
                             <div>
                                 <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-3">
-                                    Giới tính
+                                    {t("profile.gender_label")}
                                 </label>
 
                                 <div className="grid grid-cols-3 gap-3">
@@ -492,10 +494,10 @@ export default function ProfilePage() {
                                         }
                                         className={`py-3 rounded-xl border font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 ${gender === "male"
                                             ? "border-cyan-500/80 bg-cyan-500/10 text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.1)]"
-                                            : "border-slate-800 bg-slate-950 text-slate-400 hover:bg-slate-900"
+                                            : "border-card-border bg-input-bg text-slate-400 hover:bg-card-bg"
                                             }`}
                                     >
-                                        👨 Nam
+                                        👨 {t("profile.gender_male")}
                                     </button>
 
                                     <button
@@ -505,10 +507,10 @@ export default function ProfilePage() {
                                         }
                                         className={`py-3 rounded-xl border font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 ${gender === "female"
                                             ? "border-pink-500/80 bg-pink-500/10 text-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.1)]"
-                                            : "border-slate-800 bg-slate-950 text-slate-400 hover:bg-slate-900"
+                                            : "border-card-border bg-input-bg text-slate-400 hover:bg-card-bg"
                                             }`}
                                     >
-                                        👩 Nữ
+                                        👩 {t("profile.gender_female")}
                                     </button>
 
                                     <button
@@ -518,191 +520,279 @@ export default function ProfilePage() {
                                         }
                                         className={`py-3 rounded-xl border font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 ${gender === "other"
                                             ? "border-purple-500/80 bg-purple-500/10 text-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.1)]"
-                                            : "border-slate-800 bg-slate-950 text-slate-400 hover:bg-slate-900"
+                                            : "border-card-border bg-input-bg text-slate-400 hover:bg-card-bg"
                                             }`}
                                     >
-                                        🌈 Khác
+                                        🌈 {t("profile.gender_other")}
                                     </button>
                                 </div>
                             </div>
 
                             <button
                                 type="submit"
-                                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg shadow-cyan-500/20"
+                                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 shadow-lg shadow-cyan-500/20 cursor-pointer"
                             >
-                                Lưu thông tin cá nhân
+                                {t("profile.save_btn")}
                             </button>
 
                         </form>
                     </section>
 
-                    {/* PASSWORD */}
-                    <section className="bg-gradient-to-br from-slate-950/40 via-slate-900/40 to-slate-950/40 backdrop-blur-xl border border-slate-850 rounded-3xl p-8 shadow-[0_4px_25px_rgba(0,0,0,0.4)] relative overflow-hidden transition-all duration-300">
-                        <div className="flex items-center gap-4 mb-8">
-                            <div className="w-14 h-14 rounded-2xl bg-orange-500/10 flex items-center justify-center text-orange-400 text-2xl border border-orange-500/20">
-                                🔒
-                            </div>
+                    {/* RIGHT COLUMN */}
+                    <div className="space-y-8">
 
-                            <div>
-                                <h2 className="text-xl font-black bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
-                                    Đổi mật khẩu
-                                </h2>
+                        {/* PASSWORD */}
+                        <section className="bg-gradient-to-br from-card-bg/80 via-card-bg to-card-bg/80 backdrop-blur-xl border border-card-border rounded-3xl p-8 shadow-[0_4px_25px_rgba(0,0,0,0.4)] relative overflow-hidden transition-all duration-300">
+                            <div className="flex items-center gap-4 mb-8">
+                                <div className="w-14 h-14 rounded-2xl bg-orange-500/10 flex items-center justify-center text-orange-400 text-2xl border border-orange-500/20">
+                                    🔒
+                                </div>
 
-                                <p className="text-xs text-slate-500 mt-0.5">
-                                    Giữ tài khoản của bạn được bảo mật tuyệt đối
-                                </p>
-                            </div>
-                        </div>
+                                <div>
+                                    <h2 className="text-xl font-black bg-gradient-to-r from-text-primary to-slate-300 bg-clip-text text-transparent">
+                                        {t("profile.password_section")}
+                                    </h2>
 
-                        <form
-                            onSubmit={handleChangePassword}
-                            className="space-y-6"
-                        >
-
-                            {/* CURRENT PASSWORD */}
-                            <div>
-                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
-                                    Mật khẩu hiện tại
-                                </label>
-
-                                <div className="relative">
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
-                                        🔒
-                                    </span>
-
-                                    <input
-                                        type={
-                                            showCurrent
-                                                ? "text"
-                                                : "password"
-                                        }
-                                        placeholder="••••••••"
-                                        value={currentPassword}
-                                        onChange={(e) =>
-                                            setCurrentPassword(
-                                                e.target.value
-                                            )
-                                        }
-                                        className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl py-3 pl-12 pr-12 text-slate-200 transition-all duration-300 shadow-inner"
-                                    />
-
-                                    <button
-                                        type="button"
-                                        onClick={() =>
-                                            setShowCurrent(
-                                                !showCurrent
-                                            )
-                                        }
-                                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
-                                    >
-                                        {
-                                            showCurrent
-                                                ? "👁️"
-                                                : "🙈"
-                                        }
-                                    </button>
+                                    <p className="text-xs text-slate-500 mt-0.5">
+                                        {t("profile.password_section_desc")}
+                                    </p>
                                 </div>
                             </div>
 
-                            {/* NEW PASSWORD */}
-                            <div>
-                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
-                                    Mật khẩu mới
-                                </label>
-
-                                <div className="relative">
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
-                                        🔒
-                                    </span>
-
-                                    <input
-                                        type={
-                                            showNew
-                                                ? "text"
-                                                : "password"
-                                        }
-                                        placeholder="••••••••"
-                                        value={newPassword}
-                                        onChange={(e) =>
-                                            setNewPassword(
-                                                e.target.value
-                                            )
-                                        }
-                                        className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl py-3 pl-12 pr-12 text-slate-200 transition-all duration-300 shadow-inner"
-                                    />
-
-                                    <button
-                                        type="button"
-                                        onClick={() =>
-                                            setShowNew(
-                                                !showNew
-                                            )
-                                        }
-                                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
-                                    >
-                                        {
-                                            showNew
-                                                ? "👁️"
-                                                : "🙈"
-                                        }
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* CONFIRM PASSWORD */}
-                            <div>
-                                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
-                                    Xác nhận mật khẩu mới
-                                </label>
-
-                                <div className="relative">
-                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
-                                        🔒
-                                    </span>
-
-                                    <input
-                                        type={
-                                            showConfirm
-                                                ? "text"
-                                                : "password"
-                                        }
-                                        placeholder="••••••••"
-                                        value={confirmPassword}
-                                        onChange={(e) =>
-                                            setConfirmPassword(
-                                                e.target.value
-                                            )
-                                        }
-                                        className="w-full bg-slate-950/70 border border-slate-800 focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl py-3 pl-12 pr-12 text-slate-200 transition-all duration-300 shadow-inner"
-                                    />
-
-                                    <button
-                                        type="button"
-                                        onClick={() =>
-                                            setShowConfirm(
-                                                !showConfirm
-                                            )
-                                        }
-                                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
-                                    >
-                                        {
-                                            showConfirm
-                                                ? "👁️"
-                                                : "🙈"
-                                        }
-                                    </button>
-                                </div>
-                            </div>
-
-                            <button
-                                type="submit"
-                                className="w-full py-3.5 rounded-xl border border-cyan-500/80 hover:bg-cyan-500/10 text-cyan-400 font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95"
+                            <form
+                                onSubmit={handleChangePassword}
+                                className="space-y-6"
                             >
-                                Cập nhật mật khẩu
-                            </button>
 
-                        </form>
-                    </section>
+                                {/* CURRENT PASSWORD */}
+                                <div>
+                                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
+                                        {t("profile.current_password")}
+                                    </label>
+
+                                    <div className="relative">
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
+                                            🔒
+                                        </span>
+
+                                        <input
+                                            type={
+                                                showCurrent
+                                                    ? "text"
+                                                    : "password"
+                                            }
+                                            placeholder="••••••••"
+                                            value={currentPassword}
+                                            onChange={(e) =>
+                                                setCurrentPassword(
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="w-full bg-input-bg border border-input-border focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl py-3 pl-12 pr-12 text-foreground transition-all duration-300 shadow-inner"
+                                        />
+
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                setShowCurrent(
+                                                    !showCurrent
+                                                )
+                                            }
+                                            className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-foreground"
+                                        >
+                                            {
+                                                showCurrent
+                                                    ? "👁️"
+                                                    : "🙈"
+                                            }
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* NEW PASSWORD */}
+                                <div>
+                                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
+                                        {t("profile.new_password")}
+                                    </label>
+
+                                    <div className="relative">
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
+                                            🔒
+                                        </span>
+
+                                        <input
+                                            type={
+                                                showNew
+                                                    ? "text"
+                                                    : "password"
+                                            }
+                                            placeholder="••••••••"
+                                            value={newPassword}
+                                            onChange={(e) =>
+                                                setNewPassword(
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="w-full bg-input-bg border border-input-border focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl py-3 pl-12 pr-12 text-foreground transition-all duration-300 shadow-inner"
+                                        />
+
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                setShowNew(
+                                                    !showNew
+                                                )
+                                            }
+                                            className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-foreground"
+                                        >
+                                            {
+                                                showNew
+                                                    ? "👁️"
+                                                    : "🙈"
+                                            }
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* CONFIRM PASSWORD */}
+                                <div>
+                                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-2">
+                                        {t("profile.confirm_password")}
+                                    </label>
+
+                                    <div className="relative">
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
+                                            🔒
+                                        </span>
+
+                                        <input
+                                            type={
+                                                showConfirm
+                                                    ? "text"
+                                                    : "password"
+                                            }
+                                            placeholder="••••••••"
+                                            value={confirmPassword}
+                                            onChange={(e) =>
+                                                setConfirmPassword(
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="w-full bg-input-bg border border-input-border focus:border-cyan-500/80 focus:ring-2 focus:ring-cyan-500/20 outline-none rounded-xl py-3 pl-12 pr-12 text-foreground transition-all duration-300 shadow-inner"
+                                        />
+
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                setShowConfirm(
+                                                    !showConfirm
+                                                )
+                                            }
+                                            className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-foreground"
+                                        >
+                                            {
+                                                showConfirm
+                                                    ? "👁️"
+                                                    : "🙈"
+                                            }
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    className="w-full py-3.5 rounded-xl border border-cyan-500/80 hover:bg-cyan-500/10 text-cyan-400 font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer"
+                                >
+                                    {t("profile.update_password_btn")}
+                                </button>
+
+                            </form>
+                        </section>
+
+                        {/* SYSTEM SETTINGS */}
+                        <section className="bg-gradient-to-br from-card-bg/80 via-card-bg to-card-bg/80 backdrop-blur-xl border border-card-border rounded-3xl p-8 shadow-[0_4px_25px_rgba(0,0,0,0.4)] relative overflow-hidden transition-all duration-300">
+                            <div className="flex items-center gap-4 mb-8">
+                                <div className="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-2xl border border-cyan-500/20">
+                                    ⚙️
+                                </div>
+
+                                <div>
+                                    <h2 className="text-xl font-black bg-gradient-to-r from-text-primary to-slate-300 bg-clip-text text-transparent">
+                                        {t("profile.settings_section")}
+                                    </h2>
+
+                                    <p className="text-xs text-slate-500 mt-0.5">
+                                        {t("profile.settings_section_desc")}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="space-y-6">
+                                {/* THEME SELECTOR */}
+                                <div>
+                                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-3">
+                                        {t("profile.theme_label")}
+                                    </label>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <button
+                                            type="button"
+                                            onClick={() => setTheme("light")}
+                                            className={`py-3 rounded-xl border font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 cursor-pointer ${theme === "light"
+                                                ? "border-cyan-500 bg-cyan-500/10 text-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.15)]"
+                                                : "border-card-border bg-input-bg text-slate-400 hover:bg-card-bg"
+                                                }`}
+                                        >
+                                            ☀️ {t("profile.theme_light")}
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            onClick={() => setTheme("dark")}
+                                            className={`py-3 rounded-xl border font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 cursor-pointer ${theme === "dark"
+                                                ? "border-violet-500 bg-violet-500/10 text-violet-400 shadow-[0_0_15px_rgba(139,92,246,0.15)]"
+                                                : "border-card-border bg-input-bg text-slate-400 hover:bg-card-bg"
+                                                }`}
+                                        >
+                                            🌙 {t("profile.theme_dark")}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* LANGUAGE SELECTOR */}
+                                <div>
+                                    <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest block mb-3">
+                                        {t("profile.lang_label")}
+                                    </label>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <button
+                                            type="button"
+                                            onClick={() => setLanguage("vi")}
+                                            className={`py-3 rounded-xl border font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 cursor-pointer ${language === "vi"
+                                                ? "border-red-500 bg-red-500/10 text-red-500 shadow-[0_0_15px_rgba(239,68,68,0.15)]"
+                                                : "border-card-border bg-input-bg text-slate-400 hover:bg-card-bg"
+                                                }`}
+                                        >
+                                            🇻🇳 {t("profile.lang_vi")}
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            onClick={() => setLanguage("en")}
+                                            className={`py-3 rounded-xl border font-bold transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 cursor-pointer ${language === "en"
+                                                ? "border-blue-500 bg-blue-500/10 text-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.15)]"
+                                                : "border-card-border bg-input-bg text-slate-400 hover:bg-card-bg"
+                                                }`}
+                                        >
+                                            ENG {t("profile.lang_en")}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
 
                 </div>
             </main>
