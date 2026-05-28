@@ -107,7 +107,7 @@ SelfMoney/
 ## 1. Clone project
 
 ```bash
-git clone https://github.com/Giang0209/Project-2_selfmoney.git
+git clone https://github.com/LuongHuongGiang20236027/Project-2_selfmoney.git
 
 cd Project-2_selfmoney
 ```
